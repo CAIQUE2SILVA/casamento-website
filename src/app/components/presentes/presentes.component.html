@@ -1,0 +1,55 @@
+<div class="presentes-container py-5">
+  <div class="container">
+    <h1 class="text-center mb-4">Lista de Presentes</h1>
+    <p class="text-center mb-5">Escolha um presente da nossa lista e nos ajude a construir nosso lar!</p>
+
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+
+    <div *ngIf="loading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Carregando...</span>
+      </div>
+    </div>
+
+    <div class="row g-4" *ngIf="!loading">
+      <div class="col-md-4" *ngFor="let presente of presentes">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ presente.nome }}</h5>
+            <p class="card-text">{{ presente.descricao }}</p>
+            <p class="card-text">
+              <strong>Preço: </strong>
+              {{ presente.preco | currency:'BRL' }}
+            </p>
+            <div class="mb-3">
+              <span class="badge" [ngClass]="presente.reservado ? 'bg-danger' : 'bg-success'">
+                {{ presente.reservado ? 'Reservado' : 'Disponível' }}
+              </span>
+            </div>
+            <div *ngIf="!presente.reservado" class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="nomeConvidado"
+                placeholder="Seu nome"
+                [disabled]="loading">
+            </div>
+            <button
+              *ngIf="!presente.reservado"
+              class="btn btn-primary w-100"
+              (click)="reservarPresente(presente.id)"
+              [disabled]="loading || !nomeConvidado.trim()">
+              Reservar Presente
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loading && presentes.length === 0" class="text-center mt-5">
+      <p>Nenhum presente disponível no momento.</p>
+    </div>
+  </div>
+</div>

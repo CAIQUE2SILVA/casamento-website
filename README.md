@@ -1,59 +1,76 @@
-# CasamentoWebsite
+# Casamento Website
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
+Um site elegante e responsivo para casamentos, construído com Angular.
 
-## Development server
+## Recursos
 
-To start a local development server, run:
+- Página inicial com contagem regressiva para a data do casamento
+- Lista de presentes para os convidados
+- RSVP para confirmar presença
+- Galeria de fotos
+- Painel administrativo para gerenciar convidados, lista de presentes e fotos
+- Responsivo para dispositivos móveis e desktop
 
+## Tecnologias
+
+- Angular
+- Bootstrap 5
+- Supabase (banco de dados e armazenamento de imagens)
+- Netlify (hospedagem)
+
+## Requisitos
+
+- Node.js 14+
+- Angular CLI 14+
+
+## Instalação
+
+1. Clone o repositório
+```bash
+git clone https://github.com/seu-usuario/casamento-website.git
+cd casamento-website
+```
+
+2. Instale as dependências
+```bash
+npm install
+```
+
+3. Configure as variáveis de ambiente
+   - Copie `src/environments/environment.example.ts` para `src/environments/environment.ts`
+   - Edite o arquivo com suas configurações do Supabase
+
+4. Execute o projeto localmente
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+5. Acesse o projeto em `http://localhost:4200`
 
-## Code scaffolding
+## Deploy
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Veja o arquivo [DEPLOY.md](DEPLOY.md) para instruções detalhadas sobre como implantar o site usando Supabase e Netlify.
 
-```bash
-ng generate component component-name
-```
+## Personalização
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Cores e Tema
 
-```bash
-ng generate --help
-```
+O tema do site pode ser facilmente alterado modificando as variáveis CSS em `src/styles.scss`.
 
-## Building
+### Conteúdo
 
-To build the project run:
+- Edite os textos no componente correspondente a cada página
+- As imagens podem ser substituídas na pasta `src/assets/images/`
+- Altere as informações do casal no arquivo `src/app/shared/data/wedding-details.ts`
 
-```bash
-ng build
-```
+## Recursos de Administração
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+O site inclui um painel administrativo protegido por senha (localizado em `/admin`) que permite:
 
-## Running unit tests
+- Gerenciar a lista de convidados
+- Adicionar/remover itens da lista de presentes
+- Fazer upload de fotos para a galeria
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Licença
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
