@@ -3,7 +3,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SupabaseService {
   private supabase: SupabaseClient;
@@ -80,10 +80,7 @@ export class SupabaseService {
 
   // Método para excluir uma foto
   async excluirFoto(id: string) {
-    const { error } = await this.supabase
-      .from('fotos')
-      .delete()
-      .eq('id', id);
+    const { error } = await this.supabase.from('fotos').delete().eq('id', id);
 
     if (error) {
       throw new Error(`Erro ao excluir foto: ${error.message}`);
@@ -111,7 +108,7 @@ export class SupabaseService {
       .update({
         reservado: true,
         reservado_por: nomeConvidado,
-        data_reserva: new Date().toISOString()
+        data_reserva: new Date().toISOString(),
       })
       .eq('id', id)
       .select()
@@ -134,6 +131,22 @@ export class SupabaseService {
 
     if (error) {
       throw new Error(`Erro ao adicionar presente: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  // Método para atualizar um presente
+  async atualizarPresente(id: string, presente: any) {
+    const { data, error } = await this.supabase
+      .from('presentes')
+      .update(presente)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Erro ao atualizar presente: ${error.message}`);
     }
 
     return data;

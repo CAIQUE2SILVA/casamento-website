@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import {
@@ -8,7 +8,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AdminAuthService } from '../../services/admin-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -85,7 +84,7 @@ import { AdminAuthService } from '../../services/admin-auth.service';
                       role="status"
                       aria-hidden="true"
                     ></span>
-                    Entrar
+                    {{ loading ? 'Entrando...' : 'Entrar' }}
                   </button>
                 </div>
               </form>
@@ -123,31 +122,36 @@ import { AdminAuthService } from '../../services/admin-auth.service';
         background-color: #21629c;
         border-color: #21629c;
       }
+      .btn-outline-secondary {
+        color: #6c757d;
+        border-color: #6c757d;
+      }
+      .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+      }
     `,
   ],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
   error = '';
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private authService: AdminAuthService
-  ) {
-    console.log('LoginComponent inicializado');
+  constructor(private formBuilder: FormBuilder, private router: Router) {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ['admin@admin', [Validators.required, Validators.email]],
+      password: ['caca12390', Validators.required],
     });
+  }
 
-    // Preencher com os valores de teste para facilitar
-    this.loginForm.setValue({
-      email: 'admin@admin',
-      password: 'caca12390',
-    });
+  ngOnInit() {
+    // Verificar se já está logado
+    if (this.isLoggedIn()) {
+      this.router.navigate(['/admin/dashboard']);
+    }
   }
 
   // Getters para facilitar acesso aos campos do formulário
@@ -159,33 +163,37 @@ export class LoginComponent {
     return this.loginForm.get('password') as FormControl;
   }
 
-  onSubmit() {
+  private isLoggedIn(): boolean {
+    return localStorage.getItem('adminLoggedIn') === 'true';
+  }
+
+  async onSubmit() {
     this.submitted = true;
     this.error = '';
 
-    console.log('Tentando fazer login');
-
     // Verifica se o formulário é válido
     if (this.loginForm.invalid) {
-      console.log('Formulário inválido');
       return;
     }
 
     this.loading = true;
 
     try {
+      // Simular um pequeno delay para melhor UX
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const email = this.emailControl.value;
       const password = this.passwordControl.value;
 
-      console.log('Usando a senha mestra temporariamente');
-
-      // Verificação simples da senha mestra sem depender do Firebase
+      // Verificação simples da senha mestra
       if (email === 'admin@admin' && password === 'caca12390') {
-        console.log('Login bem-sucedido com senha mestra');
         localStorage.setItem('adminLoggedIn', 'true');
-        this.router.navigate(['/admin/dashboard']);
+
+        // Usar setTimeout para evitar problemas de navegação
+        setTimeout(() => {
+          this.router.navigate(['/admin/dashboard']);
+        }, 100);
       } else {
-        console.log('Credenciais inválidas');
         this.error = 'Credenciais inválidas. Por favor, tente novamente.';
       }
     } catch (error) {

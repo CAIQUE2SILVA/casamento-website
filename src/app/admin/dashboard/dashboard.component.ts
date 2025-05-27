@@ -23,6 +23,55 @@ import { firstValueFrom } from 'rxjs';
         </div>
       </div>
 
+      <!-- Cards de estatísticas -->
+      <div class="row g-4 mb-4" *ngIf="!loading">
+        <div class="col-md-4">
+          <div class="card bg-info text-white h-100">
+            <div class="card-body text-center">
+              <div class="mb-3">
+                <i class="fas fa-gift fa-3x"></i>
+              </div>
+              <h3 class="card-title">{{ totalPresentes }}</h3>
+              <p class="card-text">Presentes Cadastrados</p>
+              <small>{{ presentesReservados }} reservados</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card bg-success text-white h-100">
+            <div class="card-body text-center">
+              <div class="mb-3">
+                <i class="fas fa-image fa-3x"></i>
+              </div>
+              <h3 class="card-title">{{ totalFotos }}</h3>
+              <p class="card-text">Fotos na Galeria</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card bg-warning text-white h-100">
+            <div class="card-body text-center">
+              <div class="mb-3">
+                <i class="fas fa-users fa-3x"></i>
+              </div>
+              <h3 class="card-title">0</h3>
+              <p class="card-text">Convidados</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Carregando...</span>
+        </div>
+        <p class="mt-2">Carregando estatísticas...</p>
+      </div>
+
+      <!-- Menu de navegação -->
       <div class="row g-4">
         <div class="col-md-6 col-lg-4">
           <div class="card h-100">
@@ -99,6 +148,18 @@ import { firstValueFrom } from 'rxjs';
       .btn-outline-primary:focus {
         background-color: #2e86c1;
         border-color: #2e86c1;
+        color: white;
+      }
+
+      .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+      }
+
+      .btn-outline-danger:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
       }
     `,
   ],
@@ -107,6 +168,7 @@ export class DashboardComponent implements OnInit {
   totalFotos = 0;
   totalPresentes = 0;
   presentesReservados = 0;
+  loading = true;
 
   constructor(
     private presentesService: PresentesService,
@@ -115,32 +177,59 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('Dashboard component inicializado');
-    // Comentamos esta verificação para resolver o problema da tela em branco
-    // if (!localStorage.getItem('adminLoggedIn')) {
-    //   this.router.navigate(['/login']);
-    // }
-    this.loadStats();
+    // Carregar estatísticas com delay para evitar problemas
+    setTimeout(() => {
+      this.loadStats();
+    }, 100);
   }
 
   async loadStats() {
-    try {
-      const presentes = await firstValueFrom(
-        this.presentesService.getPresentes()
-      );
-      this.totalPresentes = presentes.length;
-      this.presentesReservados = presentes.filter((p) => p.reservado).length;
+    this.loading = true;
 
-      const fotos = await this.fotosService.getFotos();
-      this.totalFotos = fotos.length;
+    try {
+      // Carregar presentes com timeout
+      const presentesPromise = Promise.race([
+        firstValueFrom(this.presentesService.getPresentes()),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout')), 5000)
+        ),
+      ]);
+
+      const presentes = (await presentesPromise) as Presente[];
+      this.totalPresentes = presentes?.length || 0;
+      this.presentesReservados =
+        presentes?.filter((p) => p.reservado).length || 0;
     } catch (error) {
-      console.error('Erro ao carregar estatísticas:', error);
+      console.error('Erro ao carregar presentes:', error);
+      this.totalPresentes = 0;
+      this.presentesReservados = 0;
     }
+
+    try {
+      // Carregar fotos com timeout
+      const fotosPromise = Promise.race([
+        this.fotosService.getFotos(),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout')), 5000)
+        ),
+      ]);
+
+      const fotos = (await fotosPromise) as Foto[];
+      this.totalFotos = fotos?.length || 0;
+    } catch (error) {
+      console.error('Erro ao carregar fotos:', error);
+      this.totalFotos = 0;
+    }
+
+    this.loading = false;
   }
 
   logout() {
-    console.log('Logout chamado');
     localStorage.removeItem('adminLoggedIn');
-    this.router.navigate(['/login']);
+
+    // Usar setTimeout para evitar problemas de navegação
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 100);
   }
 }

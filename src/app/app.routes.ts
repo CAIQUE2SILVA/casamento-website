@@ -11,45 +11,52 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   {
     path: 'sobre',
-    loadComponent: () => import('./pages/sobre/sobre.component').then(m => m.SobreComponent)
+    loadComponent: () =>
+      import('./pages/sobre/sobre.component').then((m) => m.SobreComponent),
   },
   {
     path: 'cerimonia',
-    loadComponent: () => import('./pages/cerimonia/cerimonia.component').then(m => m.CerimoniaComponent)
+    loadComponent: () =>
+      import('./pages/cerimonia/cerimonia.component').then(
+        (m) => m.CerimoniaComponent
+      ),
   },
   {
     path: 'festa',
-    loadComponent: () => import('./pages/festa/festa.component').then(m => m.FestaComponent)
+    loadComponent: () =>
+      import('./pages/festa/festa.component').then((m) => m.FestaComponent),
   },
   {
     path: 'presentes',
-    component: PresentesComponent
-  },
-  {
-    path: 'confirmar',
-    loadComponent: () => import('./pages/confirmar/confirmar.component').then(m => m.ConfirmarComponent)
-  },
-  {
-    path: 'spotify',
-    loadComponent: () => import('./pages/spotify/spotify.component').then(m => m.SpotifyComponent)
+    component: PresentesComponent,
   },
   {
     path: 'fotos',
-    loadComponent: () => import('./pages/fotos/fotos.component').then(m => m.FotosComponent)
+    loadComponent: () =>
+      import('./pages/fotos/fotos.component').then((m) => m.FotosComponent),
   },
-  {
-    path: 'wishlist',
-    loadComponent: () => import('./pages/wishlist/wishlist.component').then(m => m.WishlistComponent)
-  },
+  // Rotas de admin simplificadas
   { path: 'login', component: LoginComponent },
-  { path: 'admin/dashboard', component: DashboardComponent },
-  { path: 'admin/convidados', component: ConvidadosComponent },
-  { path: 'admin/presentes', component: PresentesComponent },
-  { path: 'admin/fotos', component: FotosComponent },
   {
-    path: 'admin',
-    loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES),
-    canActivate: [authGuard]
+    path: 'admin/dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
   },
-  { path: '**', redirectTo: '' }
+  {
+    path: 'admin/convidados',
+    component: ConvidadosComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin/presentes',
+    component: PresentesComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin/fotos',
+    component: FotosComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'admin', redirectTo: '/admin/dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '' },
 ];
