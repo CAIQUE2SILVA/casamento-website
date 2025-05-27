@@ -31,8 +31,12 @@ import { firstValueFrom } from 'rxjs';
                 <i class="fas fa-users fa-3x text-primary"></i>
               </div>
               <h3 class="card-title">Convidados</h3>
-              <p class="card-text">Gerencie a lista de convidados e confirme presenças</p>
-              <a routerLink="/admin/convidados" class="btn btn-primary">Acessar</a>
+              <p class="card-text">
+                Gerencie a lista de convidados e confirme presenças
+              </p>
+              <a routerLink="/admin/convidados" class="btn btn-primary"
+                >Acessar</a
+              >
             </div>
           </div>
         </div>
@@ -44,8 +48,12 @@ import { firstValueFrom } from 'rxjs';
                 <i class="fas fa-gift fa-3x text-primary"></i>
               </div>
               <h3 class="card-title">Presentes</h3>
-              <p class="card-text">Gerencie a lista de presentes do casamento</p>
-              <a routerLink="/admin/presentes" class="btn btn-primary">Acessar</a>
+              <p class="card-text">
+                Gerencie a lista de presentes do casamento
+              </p>
+              <a routerLink="/admin/presentes" class="btn btn-primary"
+                >Acessar</a
+              >
             </div>
           </div>
         </div>
@@ -65,31 +73,35 @@ import { firstValueFrom } from 'rxjs';
       </div>
     </div>
   `,
-  styles: [`
-    .text-primary {
-      color: #8B5CF6 !important;
-    }
+  styles: [
+    `
+      .text-primary {
+        color: #2e86c1 !important;
+      }
 
-    .btn-primary {
-      background-color: #8B5CF6;
-      border-color: #8B5CF6;
-    }
+      .btn-primary {
+        background-color: #2e86c1;
+        border-color: #2e86c1;
+      }
 
-    .btn-primary:hover, .btn-primary:focus {
-      background-color: #7c4ff3;
-      border-color: #7c4ff3;
-    }
+      .btn-primary:hover,
+      .btn-primary:focus {
+        background-color: #21629c;
+        border-color: #21629c;
+      }
 
-    .btn-outline-primary {
-      color: #8B5CF6;
-      border-color: #8B5CF6;
-    }
+      .btn-outline-primary {
+        color: #2e86c1;
+        border-color: #2e86c1;
+      }
 
-    .btn-outline-primary:hover, .btn-outline-primary:focus {
-      background-color: #8B5CF6;
-      border-color: #8B5CF6;
-    }
-  `]
+      .btn-outline-primary:hover,
+      .btn-outline-primary:focus {
+        background-color: #2e86c1;
+        border-color: #2e86c1;
+      }
+    `,
+  ],
 })
 export class DashboardComponent implements OnInit {
   totalFotos = 0;
@@ -113,9 +125,11 @@ export class DashboardComponent implements OnInit {
 
   async loadStats() {
     try {
-      const presentes = await firstValueFrom(this.presentesService.getPresentes());
+      const presentes = await firstValueFrom(
+        this.presentesService.getPresentes()
+      );
       this.totalPresentes = presentes.length;
-      this.presentesReservados = presentes.filter(p => p.reservado).length;
+      this.presentesReservados = presentes.filter((p) => p.reservado).length;
 
       const fotos = await this.fotosService.getFotos();
       this.totalFotos = fotos.length;

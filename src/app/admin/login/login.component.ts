@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AdminAuthService } from '../../services/admin-auth.service';
 
 @Component({
@@ -27,11 +33,21 @@ import { AdminAuthService } from '../../services/admin-auth.service';
                     id="email"
                     formControlName="email"
                     class="form-control"
-                    [ngClass]="{'is-invalid': submitted && emailControl.invalid}"
-                    placeholder="Digite seu email">
-                  <div *ngIf="submitted && emailControl.invalid" class="invalid-feedback">
-                    <div *ngIf="emailControl.errors?.['required']">Email é obrigatório</div>
-                    <div *ngIf="emailControl.errors?.['email']">Email inválido</div>
+                    [ngClass]="{
+                      'is-invalid': submitted && emailControl.invalid
+                    }"
+                    placeholder="Digite seu email"
+                  />
+                  <div
+                    *ngIf="submitted && emailControl.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="emailControl.errors?.['required']">
+                      Email é obrigatório
+                    </div>
+                    <div *ngIf="emailControl.errors?.['email']">
+                      Email inválido
+                    </div>
                   </div>
                 </div>
 
@@ -42,10 +58,18 @@ import { AdminAuthService } from '../../services/admin-auth.service';
                     id="password"
                     formControlName="password"
                     class="form-control"
-                    [ngClass]="{'is-invalid': submitted && passwordControl.invalid}"
-                    placeholder="Digite sua senha">
-                  <div *ngIf="submitted && passwordControl.invalid" class="invalid-feedback">
-                    <div *ngIf="passwordControl.errors?.['required']">Senha é obrigatória</div>
+                    [ngClass]="{
+                      'is-invalid': submitted && passwordControl.invalid
+                    }"
+                    placeholder="Digite sua senha"
+                  />
+                  <div
+                    *ngIf="submitted && passwordControl.invalid"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="passwordControl.errors?.['required']">
+                      Senha é obrigatória
+                    </div>
                   </div>
                 </div>
 
@@ -53,8 +77,14 @@ import { AdminAuthService } from '../../services/admin-auth.service';
                   <button
                     type="submit"
                     class="btn btn-primary btn-lg"
-                    [disabled]="loading">
-                    <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    [disabled]="loading"
+                  >
+                    <span
+                      *ngIf="loading"
+                      class="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                     Entrar
                   </button>
                 </div>
@@ -75,23 +105,26 @@ import { AdminAuthService } from '../../services/admin-auth.service';
       </div>
     </div>
   `,
-  styles: [`
-    .card {
-      border-radius: 1rem;
-      border: none;
-    }
-    .card-title {
-      font-weight: 700;
-    }
-    .btn-primary {
-      background-color: #8B5CF6;
-      border-color: #8B5CF6;
-    }
-    .btn-primary:hover, .btn-primary:focus {
-      background-color: #7c4ff3;
-      border-color: #7c4ff3;
-    }
-  `]
+  styles: [
+    `
+      .card {
+        border-radius: 1rem;
+        border: none;
+      }
+      .card-title {
+        font-weight: 700;
+      }
+      .btn-primary {
+        background-color: #2e86c1;
+        border-color: #2e86c1;
+      }
+      .btn-primary:hover,
+      .btn-primary:focus {
+        background-color: #21629c;
+        border-color: #21629c;
+      }
+    `,
+  ],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -107,13 +140,13 @@ export class LoginComponent {
     console.log('LoginComponent inicializado');
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
 
     // Preencher com os valores de teste para facilitar
     this.loginForm.setValue({
       email: 'admin@admin',
-      password: 'caca12390'
+      password: 'caca12390',
     });
   }
 
@@ -157,7 +190,8 @@ export class LoginComponent {
       }
     } catch (error) {
       console.error('Erro ao fazer login:', error);
-      this.error = 'Ocorreu um erro ao fazer login. Por favor, tente novamente.';
+      this.error =
+        'Ocorreu um erro ao fazer login. Por favor, tente novamente.';
     } finally {
       this.loading = false;
     }

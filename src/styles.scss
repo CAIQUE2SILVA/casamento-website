@@ -2,13 +2,13 @@
 
 // @import 'fonts';
 
-@import './styles/variables.scss';
+@import "./styles/variables.scss";
 
 /* Estilos globais */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: $light-color;
   color: $dark-color;
 }
@@ -39,6 +39,30 @@ body {
       background-color: darken($accent-color, 10%);
     }
   }
+}
+
+/* Espaçamento para páginas que não são a home */
+body:not(.home-page) {
+  padding-top: 80px;
+}
+
+/* Ajuste específico para mobile */
+@media (max-width: 768px) {
+  body:not(.home-page) {
+    padding-top: 70px;
+  }
+}
+
+/* Override nova paleta azul */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $secondary-color !important;
+  border-color: $secondary-color !important;
+}
+
+.text-primary {
+  color: $secondary-color !important;
 }
 
 /* Outros estilos globais aqui */

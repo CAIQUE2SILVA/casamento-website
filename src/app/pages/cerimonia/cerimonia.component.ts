@@ -22,7 +22,9 @@ import { CommonModule } from '@angular/common';
             <div class="icon">⏰</div>
             <h3>Horário</h3>
             <p>16:00</p>
-            <p class="detail-info">Pedimos que cheguem com 30 minutos de antecedência</p>
+            <p class="detail-info">
+              Pedimos que cheguem com 30 minutos de antecedência
+            </p>
           </div>
 
           <div class="detail-card">
@@ -42,7 +44,8 @@ import { CommonModule } from '@angular/common';
               height="450"
               style="border:0;"
               allowfullscreen=""
-              loading="lazy">
+              loading="lazy"
+            >
             </iframe>
           </div>
         </div>
@@ -67,135 +70,140 @@ import { CommonModule } from '@angular/common';
             <div class="info-card">
               <h3>Fotos</h3>
               <p>Teremos fotógrafos profissionais</p>
-              <p class="info-detail">Sinta-se à vontade para tirar fotos durante a cerimônia, mas pedimos que evite o uso de flash</p>
+              <p class="info-detail">
+                Sinta-se à vontade para tirar fotos durante a cerimônia, mas
+                pedimos que evite o uso de flash
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
   `,
-  styles: [`
-    .container {
-      max-width: 900px;
-      margin: 80px auto 3rem;
-      padding: 0 1rem;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-family: 'Times New Roman', serif;
-      font-size: 2.5rem;
-      letter-spacing: 2px;
-    }
-
-    h2 {
-      text-align: center;
-      margin: 3rem 0 2rem;
-      font-family: 'Times New Roman', serif;
-      color: #1a5276;
-    }
-
-    .content {
-      line-height: 1.6;
-    }
-
-    .ceremony-details {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .detail-card {
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      padding: 2rem;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      flex: 1;
-      min-width: 200px;
-      max-width: 300px;
-
-      .icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
+  styles: [
+    `
+      .container {
+        max-width: 900px;
+        margin: 2rem auto 3rem;
+        padding: 0 1rem;
       }
 
-      h3 {
-        margin-top: 0;
-        margin-bottom: 1rem;
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-family: 'Times New Roman', serif;
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+      }
+
+      h2 {
+        text-align: center;
+        margin: 3rem 0 2rem;
+        font-family: 'Times New Roman', serif;
         color: #1a5276;
       }
 
-      p {
-        margin: 0;
-        font-weight: bold;
-        font-size: 1.1rem;
+      .content {
+        line-height: 1.6;
       }
 
-      .detail-info {
-        margin-top: 0.5rem;
-        font-weight: normal;
-        font-size: 0.9rem;
-        color: #666;
-      }
-    }
-
-    .map-container {
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .info-cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-    }
-
-    .info-card {
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      flex: 1;
-      min-width: 250px;
-
-      h3 {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        color: #1a5276;
-        text-align: center;
-      }
-
-      p {
-        margin: 0;
-        text-align: center;
-        font-weight: bold;
-      }
-
-      .info-detail {
-        margin-top: 0.5rem;
-        font-weight: normal;
-        font-size: 0.9rem;
-        color: #666;
-      }
-    }
-
-    @media (max-width: 768px) {
       .ceremony-details {
-        flex-direction: column;
-        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 2rem;
       }
 
       .detail-card {
-        width: 100%;
-        max-width: 100%;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        min-width: 200px;
+        max-width: 300px;
+
+        .icon {
+          font-size: 3rem;
+          margin-bottom: 1rem;
+        }
+
+        h3 {
+          margin-top: 0;
+          margin-bottom: 1rem;
+          color: #1a5276;
+        }
+
+        p {
+          margin: 0;
+          font-weight: bold;
+          font-size: 1.1rem;
+        }
+
+        .detail-info {
+          margin-top: 0.5rem;
+          font-weight: normal;
+          font-size: 0.9rem;
+          color: #666;
+        }
       }
-    }
-  `]
+
+      .map-container {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .info-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+      }
+
+      .info-card {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        min-width: 250px;
+
+        h3 {
+          margin-top: 0;
+          margin-bottom: 1rem;
+          color: #1a5276;
+          text-align: center;
+        }
+
+        p {
+          margin: 0;
+          text-align: center;
+          font-weight: bold;
+        }
+
+        .info-detail {
+          margin-top: 0.5rem;
+          font-weight: normal;
+          font-size: 0.9rem;
+          color: #666;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .ceremony-details {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .detail-card {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+    `,
+  ],
 })
 export class CerimoniaComponent {}

@@ -14,29 +14,31 @@ import { filter } from 'rxjs/operators';
     <!-- Mostrar header somente em páginas que não são do admin -->
     <app-header *ngIf="!isAdminRoute"></app-header>
 
-    <main [ngClass]="{'admin-page': isAdminRoute}">
+    <main [ngClass]="{ 'admin-page': isAdminRoute }">
       <router-outlet></router-outlet>
     </main>
 
     <!-- Mostrar footer somente em páginas que não são do admin -->
     <app-footer *ngIf="!isAdminRoute"></app-footer>
   `,
-  styles: [`
-    :host {
-      display: block;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  styles: [
+    `
+      :host {
+        display: block;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-    main {
-      flex: 1;
-    }
+      main {
+        flex: 1;
+      }
 
-    .admin-page {
-      padding-top: 0;
-    }
-  `]
+      .admin-page {
+        padding-top: 0;
+      }
+    `,
+  ],
 })
 export class AppComponent implements OnInit {
   isAdminRoute: boolean = false;
@@ -45,15 +47,39 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // Detecta mudanças de rota
-    this.router.events.pipe(
-      filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      // Verifica se a URL atual é uma rota de admin
-      this.isAdminRoute = event.url.includes('/admin') || event.url.includes('/login');
-    });
+    this.router.events
+      .pipe(
+        filter(
+          (event: Event): event is NavigationEnd =>
+            event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        // Verifica se a URL atual é uma rota de admin
+        this.isAdminRoute =
+          event.url.includes('/admin') || event.url.includes('/login');
+
+        // Adiciona/remove classe do body baseada na rota
+        this.updateBodyClass(event.url);
+      });
 
     // Verificar a rota inicial
     const currentUrl = this.router.url;
-    this.isAdminRoute = currentUrl.includes('/admin') || currentUrl.includes('/login');
+    this.isAdminRoute =
+      currentUrl.includes('/admin') || currentUrl.includes('/login');
+    this.updateBodyClass(currentUrl);
+  }
+
+  private updateBodyClass(url: string) {
+    const body = document.body;
+
+    // Remove classes existentes
+    body.classList.remove('home-page', 'admin-page');
+
+    if (url === '/') {
+      body.classList.add('home-page');
+    } else if (url.includes('/admin') || url.includes('/login')) {
+      body.classList.add('admin-page');
+    }
   }
 }

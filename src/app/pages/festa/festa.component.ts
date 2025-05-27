@@ -13,22 +13,24 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-  styles: [`
-    .container {
-      max-width: 800px;
-      margin: 80px auto 2rem;
-      padding: 0 1rem;
-    }
+  styles: [
+    `
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
 
-    .content {
-      line-height: 1.6;
-    }
-  `]
+      .content {
+        line-height: 1.6;
+      }
+    `,
+  ],
 })
 export class FestaComponent {}
 
@@ -44,21 +46,23 @@ export class FestaComponent {}
       </div>
     </div>
   `,
-  styles: [`
-    .container {
-      max-width: 800px;
-      margin: 80px auto 2rem;
-      padding: 0 1rem;
-    }
+  styles: [
+    `
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
 
-    .content {
-      line-height: 1.6;
-    }
-  `]
+      .content {
+        line-height: 1.6;
+      }
+    `,
+  ],
 })
 export class PresentesComponent {}
