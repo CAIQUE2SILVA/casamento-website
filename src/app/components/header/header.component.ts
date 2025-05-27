@@ -94,11 +94,15 @@ import { filter } from 'rxjs/operators';
         transition: all 0.3s ease;
         padding: 1rem 0;
         z-index: 1050;
+
+        .container {
+          padding: 0 1rem;
+        }
       }
 
       .bg-dark-transparent {
-        background-color: rgba(26, 82, 118, 0.8) !important;
-        backdrop-filter: blur(10px);
+        // background-color: rgba(26, 82, 118, 0.8) !important;
+        // backdrop-filter: blur(10px);
       }
 
       .bg-dark-solid {

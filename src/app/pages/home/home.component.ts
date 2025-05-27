@@ -168,7 +168,7 @@ import { RouterModule } from '@angular/router';
             rgba(0, 0, 0, 0.6)
           ),
           url('/assets/hero.jpg');
-        background-size: cover;
+        // background-size: cover;
         background-position: center;
         position: relative;
       }
@@ -179,7 +179,6 @@ import { RouterModule } from '@angular/router';
       }
 
       .countdown-item {
-        backdrop-filter: blur(5px);
         padding: 1rem;
         border-radius: 8px;
         display: flex;
