@@ -74,15 +74,6 @@ import { filter } from 'rxjs/operators';
                 Fotos
               </a>
             </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                routerLink="/confirmar"
-                routerLinkActive="active"
-              >
-                Confirmar
-              </a>
-            </li>
           </ul>
         </div>
       </div>

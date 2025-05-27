@@ -55,11 +55,6 @@ import { RouterModule } from '@angular/router';
                 class="text-white-50 text-decoration-none mb-2"
                 >Fotos</a
               >
-              <a
-                routerLink="/confirmar"
-                class="text-white-50 text-decoration-none"
-                >Confirmar</a
-              >
             </div>
           </div>
 

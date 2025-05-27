@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
           <div class="detail-card">
             <div class="icon">📅</div>
             <h3>Data</h3>
-            <p>02 de Fevereiro de 2023</p>
+            <p>19 de Novembro de 2025</p>
             <p class="detail-info">Quinta-feira</p>
           </div>
 
@@ -57,7 +57,7 @@ import { CommonModule } from '@angular/common';
             <div class="info-card">
               <h3>Traje</h3>
               <p>Traje Social Completo</p>
-              <p class="info-detail">Homens: Terno escuro</p>
+              <p class="info-detail">Homens: Terno escuro Azul</p>
               <p class="info-detail">Mulheres: Vestido longo ou midi</p>
             </div>
 
