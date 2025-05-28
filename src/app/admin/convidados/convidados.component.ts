@@ -777,8 +777,9 @@ export class ConvidadosComponent implements OnInit {
     const dadosConvite: ConviteEmailData = {
       to_name: convidado.nome,
       to_email: convidado.email,
-      wedding_date: '19 de Novembro de 2024',
-      wedding_location: 'Local da Cerimônia - Endereço Completo',
+      wedding_date: '15 de Novembro de 2025',
+      wedding_location:
+        'Praça Comandante eduardo de Oliveira 96 Parque Edu Chaves',
       confirmation_link: `${window.location.origin}/confirmacao?id=${convidado.id}`,
       couple_names: 'Kauã & Kimily',
     };
