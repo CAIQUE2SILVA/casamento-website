@@ -15,6 +15,8 @@ export interface Convidado {
   data_envio_convite?: Date | string | null;
   data_confirmacao?: Date | string | null;
   observacoes?: string | null;
+  acompanhante?: boolean;
+  nome_acompanhante?: string | null;
   acompanhantes?: Acompanhante[];
   created_at?: Date | string;
   updated_at?: Date | string;

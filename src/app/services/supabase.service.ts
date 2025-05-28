@@ -190,7 +190,8 @@ export class SupabaseService {
   async getConvidados() {
     const { data, error } = await this.supabase
       .from('convidados')
-      .select('*, acompanhantes(*)');
+      .select('*')
+      .order('created_at', { ascending: false });
 
     if (error) {
       throw new Error(`Erro ao buscar convidados: ${error.message}`);
@@ -231,7 +232,7 @@ export class SupabaseService {
   async getConvidadoPorId(id: string) {
     const { data, error } = await this.supabase
       .from('convidados')
-      .select('*, acompanhantes(*)')
+      .select('*')
       .eq('id', id)
       .single();
 

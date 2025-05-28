@@ -78,7 +78,7 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
               </div>
               <div class="mt-3">
                 <p class="mb-0">
-                  {{ estatisticas.total || 0 }} principais +
+                  {{ estatisticas.total || 0 }} convidados +
                   {{ estatisticas.totalPessoas - estatisticas.total || 0 }}
                   acompanhantes
                 </p>
@@ -99,7 +99,7 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
               </div>
               <div class="mt-3">
                 <p class="mb-0">
-                  {{ estatisticas.confirmados || 0 }} principais +
+                  {{ estatisticas.confirmados || 0 }} convidados +
                   {{
                     estatisticas.totalConfirmados - estatisticas.confirmados ||
                       0
@@ -128,12 +128,11 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
               </div>
               <div class="mt-3">
                 <p class="mb-0">
-                  {{ estatisticas.pendentes || 0 }} principais +
+                  {{ estatisticas.pendentes || 0 }} convidados +
                   {{
                     estatisticas.totalPessoas -
-                      estatisticas.total -
-                      (estatisticas.totalConfirmados -
-                        estatisticas.confirmados) || 0
+                      estatisticas.totalConfirmados -
+                      estatisticas.pendentes || 0
                   }}
                   acompanhantes
                 </p>
@@ -292,53 +291,37 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
               </div>
             </div>
 
-            <h5 class="mt-4 mb-3">Acompanhantes</h5>
+            <h5 class="mt-4 mb-3">Acompanhante</h5>
 
-            <div formArrayName="acompanhantes">
-              <div
-                *ngFor="
-                  let acompanhante of acompanhantesArray.controls;
-                  let i = index
-                "
-                [formGroupName]="i"
-                class="row mb-2"
-              >
-                <div class="col-md-8">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="form-check">
                   <input
-                    type="text"
-                    class="form-control"
-                    formControlName="nome"
-                    placeholder="Nome do acompanhante"
+                    class="form-check-input"
+                    type="checkbox"
+                    id="acompanhante"
+                    formControlName="acompanhante"
                   />
-                </div>
-                <div class="col-md-3">
-                  <div class="form-check mt-2">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      formControlName="confirmado"
-                    />
-                    <label class="form-check-label"> Confirmado </label>
-                  </div>
-                </div>
-                <div class="col-md-1">
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-outline-danger mt-1"
-                    (click)="removerAcompanhante(i)"
-                  >
-                    <i class="fas fa-times"></i>
-                  </button>
+                  <label class="form-check-label" for="acompanhante">
+                    Vai levar acompanhante
+                  </label>
                 </div>
               </div>
-
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-primary mt-2"
-                (click)="adicionarAcompanhante()"
+              <div
+                class="col-md-6"
+                *ngIf="convidadoForm.get('acompanhante')?.value"
               >
-                <i class="fas fa-plus me-1"></i> Adicionar Acompanhante
-              </button>
+                <label for="nome_acompanhante" class="form-label"
+                  >Nome do Acompanhante</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nome_acompanhante"
+                  formControlName="nome_acompanhante"
+                  placeholder="Nome completo do acompanhante"
+                />
+              </div>
             </div>
 
             <div class="d-flex justify-content-end mt-4">
@@ -400,16 +383,25 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                     }}</small>
                   </td>
                   <td>
-                    <span class="badge bg-secondary">
-                      {{ (convidado.acompanhantes || []).length }} total
-                    </span>
-                    <span
-                      class="badge bg-success ms-1"
-                      *ngIf="contarAcompanhantesConfirmados(convidado) > 0"
-                    >
-                      {{ contarAcompanhantesConfirmados(convidado) }}
-                      confirmados
-                    </span>
+                    <div *ngIf="convidado.acompanhante">
+                      <span class="badge bg-primary">
+                        <i class="fas fa-user-plus me-1"></i>
+                        Tem acompanhante
+                      </span>
+                      <br />
+                      <small
+                        class="text-muted mt-1"
+                        *ngIf="convidado.nome_acompanhante"
+                      >
+                        {{ convidado.nome_acompanhante }}
+                      </small>
+                    </div>
+                    <div *ngIf="!convidado.acompanhante">
+                      <span class="badge bg-secondary">
+                        <i class="fas fa-user me-1"></i>
+                        Sem acompanhante
+                      </span>
+                    </div>
                   </td>
                   <td>
                     <div class="form-check form-switch">
@@ -597,10 +589,6 @@ export class ConvidadosComponent implements OnInit {
     return this.convidadoForm.controls;
   }
 
-  get acompanhantesArray(): FormArray {
-    return this.convidadoForm.get('acompanhantes') as FormArray;
-  }
-
   async carregarConvidados(): Promise<void> {
     try {
       this.convidados = await this.convidadosService.getConvidados();
@@ -649,24 +637,9 @@ export class ConvidadosComponent implements OnInit {
       convite_enviado: [false],
       enviarConviteAoSalvar: [false],
       observacoes: [''],
-      acompanhantes: this.fb.array([]),
+      acompanhante: [false],
+      nome_acompanhante: [''],
     });
-  }
-
-  criarAcompanhanteFormGroup(acompanhante?: Acompanhante): FormGroup {
-    return this.fb.group({
-      id: [acompanhante?.id || ''],
-      nome: [acompanhante?.nome || '', Validators.required],
-      confirmado: [acompanhante?.confirmado || false],
-    });
-  }
-
-  adicionarAcompanhante(): void {
-    this.acompanhantesArray.push(this.criarAcompanhanteFormGroup());
-  }
-
-  removerAcompanhante(index: number): void {
-    this.acompanhantesArray.removeAt(index);
   }
 
   abrirFormulario(): void {
@@ -679,19 +652,6 @@ export class ConvidadosComponent implements OnInit {
   editarConvidado(convidado: Convidado): void {
     this.convidadoAtual = convidado;
 
-    // Limpar acompanhantes atuais
-    while (this.acompanhantesArray.length) {
-      this.acompanhantesArray.removeAt(0);
-    }
-
-    // Adicionar acompanhantes do convidado
-    const acompanhantes = convidado.acompanhantes || [];
-    acompanhantes.forEach((acompanhante) => {
-      this.acompanhantesArray.push(
-        this.criarAcompanhanteFormGroup(acompanhante)
-      );
-    });
-
     this.convidadoForm.patchValue({
       id: convidado.id,
       nome: convidado.nome,
@@ -701,6 +661,8 @@ export class ConvidadosComponent implements OnInit {
       convite_enviado: convidado.convite_enviado,
       enviarConviteAoSalvar: false,
       observacoes: convidado.observacoes,
+      acompanhante: convidado.acompanhante || false,
+      nome_acompanhante: convidado.nome_acompanhante || '',
     });
 
     this.submitted = false;
@@ -860,10 +822,6 @@ export class ConvidadosComponent implements OnInit {
         console.error('Erro ao excluir convidado:', error);
       }
     }
-  }
-
-  contarAcompanhantesConfirmados(convidado: Convidado): number {
-    return (convidado.acompanhantes || []).filter((a) => a.confirmado).length;
   }
 
   async enviarWhatsApp(convidado: Convidado): Promise<void> {

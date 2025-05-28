@@ -34,43 +34,9 @@ export class ConvidadosService {
   // Método para adicionar um novo convidado
   async adicionarConvidado(convidado: Convidado): Promise<Convidado> {
     try {
-      // Extrair acompanhantes antes de salvar o convidado principal
-      const acompanhantes = convidado.acompanhantes || [];
-      const convidadoSemAcompanhantes = { ...convidado };
-
-      // Remover acompanhantes do objeto (será salvo separadamente)
-      if ('acompanhantes' in convidadoSemAcompanhantes) {
-        const { acompanhantes: _, ...resto } = convidadoSemAcompanhantes;
-        const convidadoParaSalvar = resto;
-
-        // Salvar o convidado principal primeiro
-        const convidadoSalvo = await this.supabase.adicionarConvidado(
-          convidadoParaSalvar
-        );
-
-        // Depois salvar os acompanhantes se houver
-        if (acompanhantes.length > 0) {
-          for (const acompanhante of acompanhantes) {
-            await this.supabase.adicionarAcompanhante(
-              convidadoSalvo.id,
-              acompanhante
-            );
-          }
-          // Buscar o convidado completo com acompanhantes
-          const convidadoCompleto = await this.supabase.getConvidadoPorId(
-            convidadoSalvo.id
-          );
-          return convidadoCompleto;
-        }
-
-        return { ...convidadoSalvo, acompanhantes: [] };
-      }
-
-      // Se não tem acompanhantes, salvar diretamente
-      const convidadoSalvo = await this.supabase.adicionarConvidado(
-        convidadoSemAcompanhantes
-      );
-      return { ...convidadoSalvo, acompanhantes: [] };
+      // Com a nova estrutura, não precisamos mais lidar com acompanhantes separados
+      const convidadoSalvo = await this.supabase.adicionarConvidado(convidado);
+      return convidadoSalvo;
     } catch (error) {
       console.error('Erro ao adicionar convidado:', error);
       throw error;
@@ -80,41 +46,12 @@ export class ConvidadosService {
   // Método para atualizar um convidado
   async atualizarConvidado(convidado: Convidado): Promise<Convidado> {
     try {
-      const acompanhantes = convidado.acompanhantes || [];
-      const convidadoSemAcompanhantes = { ...convidado };
-
-      // Remover acompanhantes do objeto
-      if ('acompanhantes' in convidadoSemAcompanhantes) {
-        const { acompanhantes: _, ...resto } = convidadoSemAcompanhantes;
-
-        // Atualizar convidado principal
-        const convidadoAtualizado = await this.supabase.atualizarConvidado(
-          convidado.id!,
-          resto
-        );
-
-        // Atualizar acompanhantes (remover existentes e adicionar novos)
-        await this.supabase.removerAcompanhantesConvidado(convidado.id!);
-
-        if (acompanhantes.length > 0) {
-          for (const acompanhante of acompanhantes) {
-            await this.supabase.adicionarAcompanhante(
-              convidado.id!,
-              acompanhante
-            );
-          }
-        }
-
-        // Buscar o convidado completo
-        return await this.supabase.getConvidadoPorId(convidado.id!);
-      }
-
-      // Se não tem acompanhantes, atualizar diretamente
+      // Atualizar convidado com os novos campos
       const convidadoAtualizado = await this.supabase.atualizarConvidado(
         convidado.id!,
-        convidadoSemAcompanhantes
+        convidado
       );
-      return { ...convidadoAtualizado, acompanhantes: [] };
+      return convidadoAtualizado;
     } catch (error) {
       console.error('Erro ao atualizar convidado:', error);
       throw error;
@@ -172,17 +109,16 @@ export class ConvidadosService {
       ).length;
 
       // Total de pessoas (convidados principais + acompanhantes)
-      const totalPessoas = convidados.reduce(
-        (sum, c) => sum + 1 + (c.acompanhantes?.length || 0),
-        0
-      );
+      const totalPessoas = convidados.reduce((sum, c) => {
+        return sum + 1 + (c.acompanhante ? 1 : 0); // 1 para o convidado + 1 se tem acompanhante
+      }, 0);
 
       // Total de pessoas confirmadas
       const totalConfirmados = convidados.reduce((sum, c) => {
-        const acompanhantesConfirmados = (c.acompanhantes || []).filter(
-          (a) => a.confirmado
-        ).length;
-        return sum + (c.confirmado ? 1 : 0) + acompanhantesConfirmados;
+        if (c.confirmado) {
+          return sum + 1 + (c.acompanhante ? 1 : 0); // Se confirmou, conta ele + acompanhante se tiver
+        }
+        return sum;
       }, 0);
 
       return {

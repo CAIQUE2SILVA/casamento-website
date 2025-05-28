@@ -582,7 +582,7 @@ export class ConviteComponent implements OnInit {
     try {
       const formData = this.conviteForm.value;
 
-      // Primeiro, vamos tentar criar apenas o convidado principal sem acompanhantes
+      // Dados do convidado com os novos campos de acompanhante
       const convidado = {
         nome: formData.nome,
         email: formData.email,
@@ -590,6 +590,11 @@ export class ConviteComponent implements OnInit {
         confirmado: formData.confirmado,
         convite_enviado: false,
         observacoes: formData.observacoes || null,
+        acompanhante: formData.temAcompanhante || false,
+        nome_acompanhante:
+          formData.temAcompanhante && formData.nomeAcompanhante
+            ? formData.nomeAcompanhante
+            : null,
       };
 
       console.log('🔍 Dados que serão enviados:', convidado);
@@ -597,22 +602,6 @@ export class ConviteComponent implements OnInit {
       const convidadoSalvo = await this.convidadosService.adicionarConvidado(
         convidado
       );
-
-      // Se tiver acompanhante, adicionar após o convidado principal ser salvo
-      if (
-        formData.temAcompanhante &&
-        formData.nomeAcompanhante &&
-        convidadoSalvo.id
-      ) {
-        const acompanhante = {
-          nome: formData.nomeAcompanhante,
-          confirmado: formData.confirmado,
-        };
-
-        // Aqui precisaríamos de um método específico para adicionar acompanhante
-        // Por agora, vamos apenas salvar o convidado principal
-      }
-
       this.confirmacaoSucesso = true;
     } catch (error) {
       console.error('Erro ao confirmar presença:', error);
