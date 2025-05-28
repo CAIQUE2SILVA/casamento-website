@@ -166,6 +166,11 @@ export class SupabaseService {
 
   // Método para adicionar um convidado
   async adicionarConvidado(convidado: any) {
+    console.log(
+      '📝 Dados enviados para Supabase:',
+      JSON.stringify(convidado, null, 2)
+    );
+
     const { data, error } = await this.supabase
       .from('convidados')
       .insert(convidado)
@@ -173,9 +178,11 @@ export class SupabaseService {
       .single();
 
     if (error) {
+      console.error('❌ Erro detalhado do Supabase:', error);
       throw new Error(`Erro ao adicionar convidado: ${error.message}`);
     }
 
+    console.log('✅ Convidado adicionado com sucesso!');
     return data;
   }
 

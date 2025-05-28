@@ -12,9 +12,9 @@ export interface Convidado {
   telefone?: string;
   confirmado: boolean;
   convite_enviado: boolean;
-  data_envio_convite?: Date | string;
-  data_confirmacao?: Date | string;
-  observacoes?: string;
+  data_envio_convite?: Date | string | null;
+  data_confirmacao?: Date | string | null;
+  observacoes?: string | null;
   acompanhantes?: Acompanhante[];
   created_at?: Date | string;
   updated_at?: Date | string;
