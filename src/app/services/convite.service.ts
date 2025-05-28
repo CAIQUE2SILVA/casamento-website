@@ -38,9 +38,9 @@ Olá${nomeFormatado}!
 
 Kauã & Kimily têm a honra de convidá-lo(a) para celebrar o dia mais especial de suas vidas! 💕
 
-📅 *Data:* 19 de Novembro de 2024
-🕐 *Horário:* 17:00
-📍 *Local:* Local da Cerimônia
+📅 *Data:* 15 de Novembro de 2025
+🕐 *Horário:* 19:00
+📍 *Local:* Praça Comandante Eduardo de Oliveira 96 Parque Edu Chaves
 
 Para confirmar sua presença, acesse o link abaixo: ${url}
 
@@ -83,9 +83,9 @@ Olá${nomeFormatado}!
 
 Kauã & Kimily têm a honra de convidá-lo(a) para celebrar o dia mais especial de suas vidas! 💕
 
-📅 Data: 19 de Novembro de 2024
-🕐 Horário: 17:00
-📍 Local: Local da Cerimônia
+📅 Data: 15 de Novembro de 2025
+🕐 Horário: 19:00
+📍 Local: Praça Comandante Eduardo de Oliveira 96 Parque Edu Chaves
 
 Para confirmar sua presença, acesse: ${url}
 
