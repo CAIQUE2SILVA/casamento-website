@@ -55,7 +55,7 @@ import { CommonModule } from '@angular/common';
           <div class="info-cards">
             <div class="info-card">
               <h3>Traje</h3>
-              <p>traje Esporte Fino</p>
+              <p>Traje Esporte Fino</p>
               <p class="info-detail">Homens: Terno Escuro Azul</p>
               <p class="info-detail">Mulheres: Vestido longo ou midi</p>
             </div>

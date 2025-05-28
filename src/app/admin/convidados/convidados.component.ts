@@ -17,6 +17,7 @@ import {
   EmailjsService,
   ConviteEmailData,
 } from '../../services/emailjs.service';
+import { ConviteService } from '../../services/convite.service';
 import { Convidado, Acompanhante } from '../../models/convidado.model';
 
 @Component({
@@ -31,6 +32,9 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
         <div>
           <button (click)="abrirFormulario()" class="btn btn-primary me-2">
             <i class="fas fa-plus me-2"></i>Novo Convidado
+          </button>
+          <button (click)="gerarConviteGenerico()" class="btn btn-info me-2">
+            <i class="fas fa-share-alt me-2"></i>Gerar Convite
           </button>
           <button
             (click)="enviarTodosConvites()"
@@ -461,7 +465,7 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                     </div>
                   </td>
                   <td>
-                    <div class="btn-group btn-group-sm">
+                    <div class="btn-group btn-group-sm me-2 mb-1" role="group">
                       <button
                         class="btn btn-outline-primary"
                         (click)="editarConvidado(convidado)"
@@ -475,6 +479,31 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                         title="Excluir"
                       >
                         <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+
+                    <!-- Botões de Compartilhamento -->
+                    <div class="btn-group btn-group-sm" role="group">
+                      <button
+                        class="btn btn-outline-success"
+                        (click)="enviarWhatsApp(convidado)"
+                        title="Enviar via WhatsApp"
+                      >
+                        <i class="fab fa-whatsapp"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-info"
+                        (click)="copiarTextoInstagram(convidado)"
+                        title="Copiar texto para Instagram"
+                      >
+                        <i class="fab fa-instagram"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-secondary"
+                        (click)="copiarLinkConvite(convidado)"
+                        title="Copiar link do convite"
+                      >
+                        <i class="fas fa-link"></i>
                       </button>
                     </div>
                   </td>
@@ -545,7 +574,8 @@ export class ConvidadosComponent implements OnInit {
   constructor(
     private convidadosService: ConvidadosService,
     private emailjsService: EmailjsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private conviteService: ConviteService
   ) {
     this.convidadoForm = this.criarFormulario();
   }
@@ -833,5 +863,101 @@ export class ConvidadosComponent implements OnInit {
 
   contarAcompanhantesConfirmados(convidado: Convidado): number {
     return convidado.acompanhantes.filter((a) => a.confirmado).length;
+  }
+
+  async enviarWhatsApp(convidado: Convidado): Promise<void> {
+    const token = this.conviteService.gerarTokenConvite();
+    // Salvar o token no convidado se necessário
+    // convidado.token = token;
+    // await this.convidadosService.atualizarConvidado(convidado.id!, convidado);
+
+    this.conviteService.abrirWhatsApp(
+      convidado.telefone,
+      convidado.nome,
+      token
+    );
+  }
+
+  async copiarTextoInstagram(convidado: Convidado): Promise<void> {
+    const token = this.conviteService.gerarTokenConvite();
+    const texto = this.conviteService.gerarTextoInstagram(
+      convidado.nome,
+      token
+    );
+
+    const sucesso = await this.conviteService.copiarTexto(texto);
+    if (sucesso) {
+      alert('Texto do convite copiado! Cole no Instagram do convidado.');
+    } else {
+      // Fallback: mostrar o texto para copiar manualmente
+      prompt('Copie o texto abaixo e envie via Instagram:', texto);
+    }
+  }
+
+  async copiarLinkConvite(convidado: Convidado): Promise<void> {
+    const token = this.conviteService.gerarTokenConvite();
+    const url = this.conviteService.gerarUrlConvite(token);
+
+    const sucesso = await this.conviteService.copiarTexto(url);
+    if (sucesso) {
+      alert('Link do convite copiado! Você pode compartilhar onde quiser.');
+    } else {
+      // Fallback: mostrar o link para copiar manualmente
+      prompt('Copie o link abaixo:', url);
+    }
+  }
+
+  gerarConviteGenerico(): void {
+    const token = this.conviteService.gerarTokenConvite();
+    const url = this.conviteService.gerarUrlConvite(token);
+    const textoWhatsApp = this.conviteService.gerarTextoInstagram('', token);
+
+    const modal = `
+      <div style="max-width: 500px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: white;">
+        <h3 style="margin-bottom: 20px; color: #3498db;">🎉 Convite Gerado!</h3>
+
+        <div style="margin-bottom: 15px;">
+          <strong>Link do Convite:</strong><br>
+          <input type="text" value="${url}" style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px;" readonly>
+          <button onclick="navigator.clipboard.writeText('${url}').then(() => alert('Link copiado!'))" style="padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Copiar Link</button>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong>Ações:</strong><br>
+          <button onclick="window.open('${this.conviteService.gerarLinkWhatsApp(
+            '',
+            '',
+            token
+          )}', '_blank')" style="padding: 8px 16px; margin: 5px; background: #25d366; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            📱 Enviar via WhatsApp
+          </button>
+          <button onclick="navigator.clipboard.writeText(\`${textoWhatsApp.replace(
+            /`/g,
+            '\\`'
+          )}\`).then(() => alert('Texto copiado para Instagram!'))" style="padding: 8px 16px; margin: 5px; background: #e4405f; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            📷 Copiar para Instagram
+          </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+          <button onclick="this.parentElement.parentElement.remove()" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Fechar</button>
+        </div>
+      </div>
+    `;
+
+    // Criar overlay
+    const overlay = document.createElement('div');
+    overlay.style.cssText =
+      'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;';
+    overlay.innerHTML = modal;
+
+    // Fechar ao clicar no overlay
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.remove();
+      }
+    });
+
+    document.body.appendChild(overlay);
   }
 }

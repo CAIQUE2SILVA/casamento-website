@@ -42,6 +42,22 @@ export const routes: Routes = [
   //       (m) => m.ConfirmacaoComponent
   //     ),
   // },
+  // Nova rota para convite
+  {
+    path: 'convite/:token',
+    loadComponent: () =>
+      import('./pages/convite/convite.component').then(
+        (m) => m.ConviteComponent
+      ),
+  },
+  // Rota para convite sem token (para teste)
+  {
+    path: 'convite',
+    loadComponent: () =>
+      import('./pages/convite/convite.component').then(
+        (m) => m.ConviteComponent
+      ),
+  },
   // Rotas de admin simplificadas
   { path: 'login', component: LoginComponent },
   {

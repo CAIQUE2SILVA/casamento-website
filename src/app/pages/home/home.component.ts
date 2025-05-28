@@ -162,7 +162,7 @@ import { RouterModule } from '@angular/router';
       }
 
       .hero {
-        height: 100vh;
+        height: 150vh;
         background-image: linear-gradient(
             rgba(0, 0, 0, 0.6),
             rgba(0, 0, 0, 0.6)
@@ -171,6 +171,10 @@ import { RouterModule } from '@angular/router';
         background-size: cover;
         background-position: center;
         position: relative;
+
+        @media (max-width: 768px) {
+          height: 100vh;
+        }
       }
 
       .countdown-container {
