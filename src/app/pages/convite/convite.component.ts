@@ -50,15 +50,17 @@ import { ConvidadosService } from '../../services/convidados.service';
             <div class="detalhes-evento">
               <div class="detalhe">
                 <i class="fas fa-calendar-alt"></i>
-                <span>19 de Novembro de 2024</span>
+                <span>15 de Novembro de 2025</span>
               </div>
               <div class="detalhe">
                 <i class="fas fa-clock"></i>
-                <span>17:00</span>
+                <span>19:00</span>
               </div>
               <div class="detalhe">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>Local da Cerimônia</span>
+                <span
+                  >Praça Comandante Eduardo de Oliveira 96 Parque Edu Chaves
+                </span>
               </div>
             </div>
           </div>
