@@ -14,14 +14,14 @@ import { CommonModule } from '@angular/common';
           <div class="detail-card">
             <div class="icon">📅</div>
             <h3>Data</h3>
-            <p>19 de Novembro de 2025</p>
-            <p class="detail-info">Quinta-feira</p>
+            <p>15 de Novembro de 2025</p>
+            <p class="detail-info">Sábado</p>
           </div>
 
           <div class="detail-card">
             <div class="icon">⏰</div>
             <h3>Horário</h3>
-            <p>16:00</p>
+            <p>19:00</p>
             <p class="detail-info">
               Pedimos que cheguem com 30 minutos de antecedência
             </p>
@@ -30,8 +30,7 @@ import { CommonModule } from '@angular/common';
           <div class="detail-card">
             <div class="icon">🏛️</div>
             <h3>Local</h3>
-            <p>Igreja Nossa Senhora da Paz</p>
-            <p class="detail-info">Rua das Flores, 123 - Centro</p>
+            <p>Praça Comandante Eduardo de Oliveira 96 Parque Edu Chaves</p>
           </div>
         </div>
 
@@ -39,14 +38,14 @@ import { CommonModule } from '@angular/common';
           <h2>Como Chegar</h2>
           <div class="map-container">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.3564349262354!2d-43.18105908503451!3d-22.90692998501355!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x997f5fd24e0bbb%3A0x99447fc2d5c7032d!2sRio%20de%20Janeiro%2C%20RJ!5e0!3m2!1spt-BR!2sbr!4v1623869115267!5m2!1spt-BR!2sbr"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3659.5203745558883!2d-46.56486479040401!3d-23.47775910690703!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cef5b97e08fb15%3A0xf70c95a2013ec9b7!2sBuffet%20DF!5e0!3m2!1sen!2sbr!4v1748448557226!5m2!1sen!2sbr"
               width="100%"
               height="450"
               style="border:0;"
               allowfullscreen=""
               loading="lazy"
-            >
-            </iframe>
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
 
@@ -56,15 +55,9 @@ import { CommonModule } from '@angular/common';
           <div class="info-cards">
             <div class="info-card">
               <h3>Traje</h3>
-              <p>Traje Social Completo</p>
-              <p class="info-detail">Homens: Terno escuro Azul</p>
+              <p>traje Esporte Fino</p>
+              <p class="info-detail">Homens: Terno Escuro Azul</p>
               <p class="info-detail">Mulheres: Vestido longo ou midi</p>
-            </div>
-
-            <div class="info-card">
-              <h3>Estacionamento</h3>
-              <p>Estacionamento disponível no local</p>
-              <p class="info-detail">Valor: R$ 30,00</p>
             </div>
 
             <div class="info-card">

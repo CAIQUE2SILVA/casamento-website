@@ -140,7 +140,7 @@ import { firstValueFrom } from 'rxjs';
       }
 
       .btn-outline-primary {
-        color: #2e86c1;
+        color: white !important;
         border-color: #2e86c1;
       }
 

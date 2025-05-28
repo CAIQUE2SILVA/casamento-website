@@ -1,8 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ConvidadosService, EstatisticasConvidados } from '../../services/convidados.service';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormArray,
+} from '@angular/forms';
+import {
+  ConvidadosService,
+  EstatisticasConvidados,
+} from '../../services/convidados.service';
+import {
+  EmailjsService,
+  ConviteEmailData,
+} from '../../services/emailjs.service';
 import { Convidado, Acompanhante } from '../../models/convidado.model';
 
 @Component({
@@ -18,15 +32,37 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
           <button (click)="abrirFormulario()" class="btn btn-primary me-2">
             <i class="fas fa-plus me-2"></i>Novo Convidado
           </button>
+          <button
+            (click)="enviarTodosConvites()"
+            class="btn btn-success me-2"
+            [disabled]="enviandoTodosConvites"
+          >
+            <i class="fas fa-envelope me-2" *ngIf="!enviandoTodosConvites"></i>
+            <i
+              class="fas fa-spinner fa-spin me-2"
+              *ngIf="enviandoTodosConvites"
+            ></i>
+            {{
+              enviandoTodosConvites ? 'Enviando...' : 'Enviar Todos os Convites'
+            }}
+          </button>
           <a routerLink="/admin/dashboard" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i>Voltar
           </a>
         </div>
       </div>
 
+      <!-- Alerta de configuração do EmailJS -->
+      <div *ngIf="!emailjsConfigurado" class="alert alert-warning mb-4">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>Atenção:</strong> O EmailJS não está configurado. Configure as
+        chaves no arquivo <code>src/app/services/emailjs.service.ts</code> para
+        enviar convites por email.
+      </div>
+
       <!-- Cards de estatísticas -->
       <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card bg-primary text-white h-100">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
@@ -37,13 +73,17 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                 <i class="fas fa-users fa-3x text-white-50"></i>
               </div>
               <div class="mt-3">
-                <p class="mb-0">{{ estatisticas.total || 0 }} principais + {{ estatisticas.totalPessoas - estatisticas.total || 0 }} acompanhantes</p>
+                <p class="mb-0">
+                  {{ estatisticas.total || 0 }} principais +
+                  {{ estatisticas.totalPessoas - estatisticas.total || 0 }}
+                  acompanhantes
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card bg-success text-white h-100">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
@@ -54,24 +94,70 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                 <i class="fas fa-check-circle fa-3x text-white-50"></i>
               </div>
               <div class="mt-3">
-                <p class="mb-0">{{ estatisticas.confirmados || 0 }} principais + {{ estatisticas.totalConfirmados - estatisticas.confirmados || 0 }} acompanhantes</p>
+                <p class="mb-0">
+                  {{ estatisticas.confirmados || 0 }} principais +
+                  {{
+                    estatisticas.totalConfirmados - estatisticas.confirmados ||
+                      0
+                  }}
+                  acompanhantes
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="card bg-warning text-white h-100">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h6 class="text-white-50">Presenças Pendentes</h6>
-                  <h2 class="mb-0">{{ estatisticas.totalPessoas - estatisticas.totalConfirmados || 0 }}</h2>
+                  <h2 class="mb-0">
+                    {{
+                      estatisticas.totalPessoas -
+                        estatisticas.totalConfirmados || 0
+                    }}
+                  </h2>
                 </div>
                 <i class="fas fa-clock fa-3x text-white-50"></i>
               </div>
               <div class="mt-3">
-                <p class="mb-0">{{ estatisticas.pendentes || 0 }} principais + {{ (estatisticas.totalPessoas - estatisticas.total) - (estatisticas.totalConfirmados - estatisticas.confirmados) || 0 }} acompanhantes</p>
+                <p class="mb-0">
+                  {{ estatisticas.pendentes || 0 }} principais +
+                  {{
+                    estatisticas.totalPessoas -
+                      estatisticas.total -
+                      (estatisticas.totalConfirmados -
+                        estatisticas.confirmados) || 0
+                  }}
+                  acompanhantes
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card bg-info text-white h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-white-50">Convites Enviados</h6>
+                  <h2 class="mb-0">{{ estatisticas.convitesEnviados || 0 }}</h2>
+                </div>
+                <i class="fas fa-envelope fa-3x text-white-50"></i>
+              </div>
+              <div class="mt-3">
+                <p class="mb-0">
+                  {{
+                    (
+                      ((estatisticas.convitesEnviados || 0) /
+                        (estatisticas.total || 1)) *
+                      100
+                    ).toFixed(0)
+                  }}% dos convidados
+                </p>
               </div>
             </div>
           </div>
@@ -80,9 +166,16 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
 
       <!-- Formulário de convidado (exibido quando estiver editando) -->
       <div *ngIf="mostraFormulario" class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5 class="mb-0">{{ convidadoAtual?.id ? 'Editar' : 'Novo' }} Convidado</h5>
-          <button (click)="cancelarEdicao()" class="btn btn-sm btn-outline-secondary">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h5 class="mb-0">
+            {{ convidadoAtual?.id ? 'Editar' : 'Novo' }} Convidado
+          </h5>
+          <button
+            (click)="cancelarEdicao()"
+            class="btn btn-sm btn-outline-secondary"
+          >
             <i class="fas fa-times"></i>
           </button>
         </div>
@@ -91,17 +184,41 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
             <div class="row mb-3">
               <div class="col-md-6">
                 <label for="nome" class="form-label">Nome Completo*</label>
-                <input type="text" class="form-control" id="nome" formControlName="nome" placeholder="Nome completo do convidado">
-                <div *ngIf="submitted && cf['nome'].errors" class="text-danger small mt-1">
-                  <span *ngIf="cf['nome'].errors['required']">Nome é obrigatório</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nome"
+                  formControlName="nome"
+                  placeholder="Nome completo do convidado"
+                />
+                <div
+                  *ngIf="submitted && cf['nome'].errors"
+                  class="text-danger small mt-1"
+                >
+                  <span *ngIf="cf['nome'].errors['required']"
+                    >Nome é obrigatório</span
+                  >
                 </div>
               </div>
               <div class="col-md-6">
                 <label for="email" class="form-label">Email*</label>
-                <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email para enviar o convite">
-                <div *ngIf="submitted && cf['email'].errors" class="text-danger small mt-1">
-                  <span *ngIf="cf['email'].errors['required']">Email é obrigatório</span>
-                  <span *ngIf="cf['email'].errors['email']">Email inválido</span>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  formControlName="email"
+                  placeholder="Email para enviar o convite"
+                />
+                <div
+                  *ngIf="submitted && cf['email'].errors"
+                  class="text-danger small mt-1"
+                >
+                  <span *ngIf="cf['email'].errors['required']"
+                    >Email é obrigatório</span
+                  >
+                  <span *ngIf="cf['email'].errors['email']"
+                    >Email inválido</span
+                  >
                 </div>
               </div>
             </div>
@@ -109,28 +226,63 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
             <div class="row mb-3">
               <div class="col-md-6">
                 <label for="telefone" class="form-label">Telefone</label>
-                <input type="tel" class="form-control" id="telefone" formControlName="telefone" placeholder="Telefone do convidado">
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="telefone"
+                  formControlName="telefone"
+                  placeholder="Telefone do convidado"
+                />
               </div>
               <div class="col-md-6">
                 <label for="observacoes" class="form-label">Observações</label>
-                <input type="text" class="form-control" id="observacoes" formControlName="observacoes" placeholder="Observações sobre o convidado">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="observacoes"
+                  formControlName="observacoes"
+                  placeholder="Observações sobre o convidado"
+                />
               </div>
             </div>
 
             <div class="row mb-3">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="confirmado" formControlName="confirmado">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="confirmado"
+                    formControlName="confirmado"
+                  />
                   <label class="form-check-label" for="confirmado">
                     Presença confirmada
                   </label>
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="conviteEnviado" formControlName="conviteEnviado">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="conviteEnviado"
+                    formControlName="conviteEnviado"
+                  />
                   <label class="form-check-label" for="conviteEnviado">
                     Convite enviado
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="enviarConviteAoSalvar"
+                    formControlName="enviarConviteAoSalvar"
+                  />
+                  <label class="form-check-label" for="enviarConviteAoSalvar">
+                    Enviar convite ao salvar
                   </label>
                 </div>
               </div>
@@ -139,32 +291,60 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
             <h5 class="mt-4 mb-3">Acompanhantes</h5>
 
             <div formArrayName="acompanhantes">
-              <div *ngFor="let acompanhante of acompanhantesArray.controls; let i = index" [formGroupName]="i" class="row mb-2">
+              <div
+                *ngFor="
+                  let acompanhante of acompanhantesArray.controls;
+                  let i = index
+                "
+                [formGroupName]="i"
+                class="row mb-2"
+              >
                 <div class="col-md-8">
-                  <input type="text" class="form-control" formControlName="nome" placeholder="Nome do acompanhante">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="nome"
+                    placeholder="Nome do acompanhante"
+                  />
                 </div>
                 <div class="col-md-3">
                   <div class="form-check mt-2">
-                    <input class="form-check-input" type="checkbox" formControlName="confirmado">
-                    <label class="form-check-label">
-                      Confirmado
-                    </label>
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      formControlName="confirmado"
+                    />
+                    <label class="form-check-label"> Confirmado </label>
                   </div>
                 </div>
                 <div class="col-md-1">
-                  <button type="button" class="btn btn-sm btn-outline-danger mt-1" (click)="removerAcompanhante(i)">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger mt-1"
+                    (click)="removerAcompanhante(i)"
+                  >
                     <i class="fas fa-times"></i>
                   </button>
                 </div>
               </div>
 
-              <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="adicionarAcompanhante()">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary mt-2"
+                (click)="adicionarAcompanhante()"
+              >
                 <i class="fas fa-plus me-1"></i> Adicionar Acompanhante
               </button>
             </div>
 
             <div class="d-flex justify-content-end mt-4">
-              <button type="button" class="btn btn-outline-secondary me-2" (click)="cancelarEdicao()">Cancelar</button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary me-2"
+                (click)="cancelarEdicao()"
+              >
+                Cancelar
+              </button>
               <button type="submit" class="btn btn-primary">Salvar</button>
             </div>
           </form>
@@ -179,7 +359,12 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
               <h5 class="mb-0">Lista de Convidados</h5>
             </div>
             <div class="col-auto">
-              <input type="text" class="form-control form-control-sm" placeholder="Pesquisar convidados..." [(ngModel)]="termoBusca">
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Pesquisar convidados..."
+                [(ngModel)]="termoBusca"
+              />
             </div>
           </div>
         </div>
@@ -199,49 +384,109 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
               <tbody>
                 <tr *ngFor="let convidado of convidadosFiltrados">
                   <td>
-                    {{ convidado.nome }}
-                    <span *ngIf="convidado.confirmado" class="badge bg-success ms-2">Confirmado</span>
+                    <div class="fw-bold">{{ convidado.nome }}</div>
+                    <small class="text-muted" *ngIf="convidado.telefone">{{
+                      convidado.telefone
+                    }}</small>
                   </td>
-                  <td>{{ convidado.email }}</td>
                   <td>
-                    <span class="badge bg-primary">{{ convidado.acompanhantes.length }}</span>
-                    <span *ngIf="convidado.acompanhantes.length > 0" class="badge bg-success ms-1">
-                      {{ contarAcompanhantesConfirmados(convidado) }} confirmados
+                    <div>{{ convidado.email }}</div>
+                    <small class="text-muted" *ngIf="convidado.observacoes">{{
+                      convidado.observacoes
+                    }}</small>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary">
+                      {{ convidado.acompanhantes.length }} total
+                    </span>
+                    <span
+                      class="badge bg-success ms-1"
+                      *ngIf="contarAcompanhantesConfirmados(convidado) > 0"
+                    >
+                      {{ contarAcompanhantesConfirmados(convidado) }}
+                      confirmados
                     </span>
                   </td>
                   <td>
                     <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" [checked]="convidado.confirmado"
-                             (change)="alternarConfirmacao(convidado, $event)">
-                      <label class="form-check-label">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        [checked]="convidado.confirmado"
+                        (change)="alternarConfirmacao(convidado, $event)"
+                        [id]="'confirmado-' + convidado.id"
+                      />
+                      <label
+                        class="form-check-label"
+                        [for]="'confirmado-' + convidado.id"
+                      >
                         {{ convidado.confirmado ? 'Confirmado' : 'Pendente' }}
                       </label>
                     </div>
                   </td>
                   <td>
-                    <button
-                      class="btn btn-sm"
-                      [ngClass]="convidado.conviteEnviado ? 'btn-success' : 'btn-outline-primary'"
-                      (click)="enviarConvite(convidado)"
-                      [disabled]="enviandoConvite === convidado.id">
-                      <i class="fas" [ngClass]="convidado.conviteEnviado ? 'fa-check' : 'fa-paper-plane'"></i>
-                      {{ convidado.conviteEnviado ? 'Enviado' : 'Enviar' }}
-                      <span *ngIf="enviandoConvite === convidado.id" class="spinner-border spinner-border-sm ms-1" role="status"></span>
-                    </button>
+                    <div class="d-flex align-items-center">
+                      <span
+                        class="badge me-2"
+                        [class.bg-success]="convidado.conviteEnviado"
+                        [class.bg-warning]="!convidado.conviteEnviado"
+                      >
+                        {{ convidado.conviteEnviado ? 'Enviado' : 'Pendente' }}
+                      </span>
+                      <button
+                        class="btn btn-sm btn-outline-primary"
+                        [disabled]="
+                          convidado.conviteEnviado ||
+                          enviandoConvite === convidado.id ||
+                          !emailjsConfigurado
+                        "
+                        (click)="enviarConvite(convidado)"
+                        [title]="
+                          !emailjsConfigurado
+                            ? 'Configure o EmailJS primeiro'
+                            : convidado.conviteEnviado
+                            ? 'Convite já enviado'
+                            : 'Enviar convite'
+                        "
+                      >
+                        <i
+                          class="fas fa-envelope"
+                          *ngIf="enviandoConvite !== convidado.id"
+                        ></i>
+                        <i
+                          class="fas fa-spinner fa-spin"
+                          *ngIf="enviandoConvite === convidado.id"
+                        ></i>
+                      </button>
+                    </div>
                   </td>
                   <td>
-                    <button class="btn btn-sm btn-info me-1" (click)="editarConvidado(convidado)">
-                      <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger" (click)="excluirConvidado(convidado)">
-                      <i class="fas fa-trash"></i>
-                    </button>
+                    <div class="btn-group btn-group-sm">
+                      <button
+                        class="btn btn-outline-primary"
+                        (click)="editarConvidado(convidado)"
+                        title="Editar"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger"
+                        (click)="excluirConvidado(convidado)"
+                        title="Excluir"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
                   </td>
                 </tr>
                 <tr *ngIf="convidadosFiltrados.length === 0">
-                  <td colspan="6" class="text-center py-3">
-                    Nenhum convidado encontrado.
-                    <button *ngIf="termoBusca" class="btn btn-sm btn-link" (click)="termoBusca = ''">Limpar busca</button>
+                  <td colspan="6" class="text-center py-4 text-muted">
+                    <i class="fas fa-users fa-3x mb-3 d-block"></i>
+                    {{
+                      termoBusca
+                        ? 'Nenhum convidado encontrado com o termo pesquisado.'
+                        : 'Nenhum convidado cadastrado ainda.'
+                    }}
                   </td>
                 </tr>
               </tbody>
@@ -251,43 +496,31 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
       </div>
     </div>
   `,
-  styles: [`
-    .badge {
-      font-weight: 500;
-    }
+  styles: [
+    `
+      .form-check-input:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+      }
 
-    .bg-primary {
-      background-color: #8B5CF6 !important;
-    }
+      .badge {
+        font-size: 0.75em;
+      }
 
-    .bg-primary.text-white .text-white-50 {
-      color: rgba(255, 255, 255, 0.7) !important;
-    }
+      .btn-group-sm > .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+      }
 
-    .btn-primary {
-      background-color: #8B5CF6;
-      border-color: #8B5CF6;
-    }
+      .table td {
+        vertical-align: middle;
+      }
 
-    .btn-primary:hover, .btn-primary:focus {
-      background-color: #7c4ff3;
-      border-color: #7c4ff3;
-    }
-
-    .btn-outline-primary {
-      color: #8B5CF6;
-      border-color: #8B5CF6;
-    }
-
-    .btn-outline-primary:hover, .btn-outline-primary:focus {
-      background-color: #8B5CF6;
-      border-color: #8B5CF6;
-    }
-
-    .card-header .btn-sm {
-      padding: 0.25rem 0.5rem;
-    }
-  `]
+      .alert {
+        border-left: 4px solid #ffc107;
+      }
+    `,
+  ],
 })
 export class ConvidadosComponent implements OnInit {
   convidados: Convidado[] = [];
@@ -296,20 +529,22 @@ export class ConvidadosComponent implements OnInit {
     total: 0,
     confirmados: 0,
     pendentes: 0,
-    convitesEnviados: 0,
     totalPessoas: 0,
-    totalConfirmados: 0
+    totalConfirmados: 0,
+    convitesEnviados: 0,
   };
-
   termoBusca: string = '';
   mostraFormulario: boolean = false;
   convidadoAtual: Convidado | null = null;
   convidadoForm: FormGroup;
   submitted: boolean = false;
   enviandoConvite: string | null = null;
+  enviandoTodosConvites: boolean = false;
+  emailjsConfigurado: boolean = false;
 
   constructor(
     private convidadosService: ConvidadosService,
+    private emailjsService: EmailjsService,
     private fb: FormBuilder
   ) {
     this.convidadoForm = this.criarFormulario();
@@ -318,12 +553,19 @@ export class ConvidadosComponent implements OnInit {
   ngOnInit(): void {
     this.carregarConvidados();
     this.carregarEstatisticas();
+    this.verificarConfiguracaoEmailJS();
 
     // Observa mudanças no termo de busca
     this.observarTermoBusca();
   }
 
-  get cf() { return this.convidadoForm.controls; }
+  verificarConfiguracaoEmailJS(): void {
+    this.emailjsConfigurado = this.emailjsService.isConfigured();
+  }
+
+  get cf() {
+    return this.convidadoForm.controls;
+  }
 
   get acompanhantesArray(): FormArray {
     return this.convidadoForm.get('acompanhantes') as FormArray;
@@ -348,7 +590,7 @@ export class ConvidadosComponent implements OnInit {
 
   observarTermoBusca(): void {
     // Em um cenário real, usaríamos debounce com RxJS
-    setInterval(() => this.filtrarConvidados(), 300);
+    setInterval(() => this.filtrarConvidados(), 60000);
   }
 
   filtrarConvidados(): void {
@@ -358,11 +600,12 @@ export class ConvidadosComponent implements OnInit {
     }
 
     const termo = this.termoBusca.toLowerCase();
-    this.convidadosFiltrados = this.convidados.filter(convidado =>
-      convidado.nome.toLowerCase().includes(termo) ||
-      convidado.email.toLowerCase().includes(termo) ||
-      convidado.telefone?.toLowerCase().includes(termo) ||
-      convidado.observacoes?.toLowerCase().includes(termo)
+    this.convidadosFiltrados = this.convidados.filter(
+      (convidado) =>
+        convidado.nome.toLowerCase().includes(termo) ||
+        convidado.email.toLowerCase().includes(termo) ||
+        convidado.telefone?.toLowerCase().includes(termo) ||
+        convidado.observacoes?.toLowerCase().includes(termo)
     );
   }
 
@@ -374,8 +617,9 @@ export class ConvidadosComponent implements OnInit {
       telefone: [''],
       confirmado: [false],
       conviteEnviado: [false],
+      enviarConviteAoSalvar: [false],
       observacoes: [''],
-      acompanhantes: this.fb.array([])
+      acompanhantes: this.fb.array([]),
     });
   }
 
@@ -383,7 +627,7 @@ export class ConvidadosComponent implements OnInit {
     return this.fb.group({
       id: [acompanhante?.id || ''],
       nome: [acompanhante?.nome || '', Validators.required],
-      confirmado: [acompanhante?.confirmado || false]
+      confirmado: [acompanhante?.confirmado || false],
     });
   }
 
@@ -411,8 +655,10 @@ export class ConvidadosComponent implements OnInit {
     }
 
     // Adicionar acompanhantes do convidado
-    convidado.acompanhantes.forEach(acompanhante => {
-      this.acompanhantesArray.push(this.criarAcompanhanteFormGroup(acompanhante));
+    convidado.acompanhantes.forEach((acompanhante) => {
+      this.acompanhantesArray.push(
+        this.criarAcompanhanteFormGroup(acompanhante)
+      );
     });
 
     this.convidadoForm.patchValue({
@@ -422,7 +668,8 @@ export class ConvidadosComponent implements OnInit {
       telefone: convidado.telefone,
       confirmado: convidado.confirmado,
       conviteEnviado: convidado.conviteEnviado,
-      observacoes: convidado.observacoes
+      enviarConviteAoSalvar: false,
+      observacoes: convidado.observacoes,
     });
 
     this.submitted = false;
@@ -443,14 +690,34 @@ export class ConvidadosComponent implements OnInit {
     }
 
     const convidadoData = this.convidadoForm.value as Convidado;
+    const enviarConvite = this.convidadoForm.get(
+      'enviarConviteAoSalvar'
+    )?.value;
+
     try {
+      let convidadoSalvo: Convidado;
+
       if (convidadoData.id) {
         // Atualizar convidado existente
-        await this.convidadosService.atualizarConvidado(convidadoData);
+        convidadoSalvo = await this.convidadosService.atualizarConvidado(
+          convidadoData
+        );
       } else {
         // Adicionar novo convidado
-        await this.convidadosService.adicionarConvidado(convidadoData);
+        convidadoSalvo = await this.convidadosService.adicionarConvidado(
+          convidadoData
+        );
       }
+
+      // Enviar convite se solicitado
+      if (
+        enviarConvite &&
+        this.emailjsConfigurado &&
+        !convidadoSalvo.conviteEnviado
+      ) {
+        await this.enviarConviteEmail(convidadoSalvo);
+      }
+
       this.mostraFormulario = false;
       this.convidadoAtual = null;
       this.submitted = false;
@@ -458,6 +725,7 @@ export class ConvidadosComponent implements OnInit {
       await this.carregarEstatisticas();
     } catch (error) {
       console.error('Erro ao salvar convidado:', error);
+      alert('Erro ao salvar convidado. Tente novamente.');
     }
   }
 
@@ -472,28 +740,87 @@ export class ConvidadosComponent implements OnInit {
   }
 
   async enviarConvite(convidado: Convidado): Promise<void> {
-    if (convidado.conviteEnviado) {
-      return; // Convite já enviado
+    if (convidado.conviteEnviado || !this.emailjsConfigurado) {
+      return;
     }
 
     this.enviandoConvite = convidado.id!;
 
-    // Simulação de envio de email
-    setTimeout(async () => {
-      try {
-        await this.convidadosService.enviarConvite(convidado.id!);
-        await this.carregarConvidados();
-        await this.carregarEstatisticas();
-      } catch (error) {
-        console.error('Erro ao enviar convite:', error);
-      } finally {
-        this.enviandoConvite = null;
+    try {
+      await this.enviarConviteEmail(convidado);
+      await this.carregarConvidados();
+      await this.carregarEstatisticas();
+    } catch (error) {
+      console.error('Erro ao enviar convite:', error);
+      alert('Erro ao enviar convite. Verifique a configuração do EmailJS.');
+    } finally {
+      this.enviandoConvite = null;
+    }
+  }
+
+  async enviarTodosConvites(): Promise<void> {
+    if (!this.emailjsConfigurado) {
+      alert('Configure o EmailJS primeiro para enviar convites.');
+      return;
+    }
+
+    const convidadosPendentes = this.convidados.filter(
+      (c) => !c.conviteEnviado
+    );
+
+    if (convidadosPendentes.length === 0) {
+      alert('Todos os convites já foram enviados!');
+      return;
+    }
+
+    if (
+      !confirm(
+        `Deseja enviar convites para ${convidadosPendentes.length} convidados?`
+      )
+    ) {
+      return;
+    }
+
+    this.enviandoTodosConvites = true;
+
+    try {
+      for (const convidado of convidadosPendentes) {
+        await this.enviarConviteEmail(convidado);
+        // Pequeno delay entre envios para não sobrecarregar o EmailJS
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
-    }, 1500);
+
+      await this.carregarConvidados();
+      await this.carregarEstatisticas();
+      alert('Todos os convites foram enviados com sucesso!');
+    } catch (error) {
+      console.error('Erro ao enviar convites em lote:', error);
+      alert(
+        'Erro ao enviar alguns convites. Verifique o console para mais detalhes.'
+      );
+    } finally {
+      this.enviandoTodosConvites = false;
+    }
+  }
+
+  private async enviarConviteEmail(convidado: Convidado): Promise<void> {
+    const dadosConvite: ConviteEmailData = {
+      to_name: convidado.nome,
+      to_email: convidado.email,
+      wedding_date: '19 de Novembro de 2024',
+      wedding_location: 'Local da Cerimônia - Endereço Completo',
+      confirmation_link: `${window.location.origin}/confirmacao?id=${convidado.id}`,
+      couple_names: 'Kauã & Kimily',
+    };
+
+    await this.emailjsService.enviarConviteCasamento(dadosConvite);
+    await this.convidadosService.marcarConviteEnviado(convidado.id!);
   }
 
   async excluirConvidado(convidado: Convidado): Promise<void> {
-    if (confirm(`Tem certeza que deseja excluir o convidado "${convidado.nome}"?`)) {
+    if (
+      confirm(`Tem certeza que deseja excluir o convidado "${convidado.nome}"?`)
+    ) {
       try {
         await this.convidadosService.excluirConvidado(convidado.id!);
         await this.carregarConvidados();
@@ -505,6 +832,6 @@ export class ConvidadosComponent implements OnInit {
   }
 
   contarAcompanhantesConfirmados(convidado: Convidado): number {
-    return convidado.acompanhantes.filter(a => a.confirmado).length;
+    return convidado.acompanhantes.filter((a) => a.confirmado).length;
   }
 }

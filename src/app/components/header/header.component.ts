@@ -55,7 +55,7 @@ import { filter } from 'rxjs/operators';
                 Cerimônia
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" routerLink="/festa" routerLinkActive="active">
                 Festa
               </a>
@@ -68,7 +68,7 @@ import { filter } from 'rxjs/operators';
               >
                 Presentes
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a class="nav-link" routerLink="/fotos" routerLinkActive="active">
                 Fotos

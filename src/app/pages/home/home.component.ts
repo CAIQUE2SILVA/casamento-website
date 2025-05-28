@@ -15,8 +15,8 @@ import { RouterModule } from '@angular/router';
         <div class="container">
           <h1 class="wedding-couple">
             <span class="cursive">Kauã</span>
-            <span>&</span>
-            <span class="cursive">Kimilly</span>
+            <span class="cursive">&</span>
+            <span class="cursive">Kimily</span>
             <svg class="heart-svg" viewBox="0 0 32 29.6">
               <path
                 d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
@@ -27,7 +27,7 @@ import { RouterModule } from '@angular/router';
           <p class="fs-4 mb-5">19 DE NOVEMBRO DE 2025</p>
 
           <div class="row justify-content-center countdown-container">
-            <div class="col-3 col-md-2">
+            <div class="col-2">
               <div class="countdown-item">
                 <span class="count-number cursive">{{ countdown.days }}</span>
                 <span class="label">Dias</span>
@@ -37,7 +37,7 @@ import { RouterModule } from '@angular/router';
               <span class="timer-separator">:</span>
             </div>
 
-            <div class="col-3 col-md-2">
+            <div class="col-2">
               <div class="countdown-item">
                 <span class="count-number cursive">{{ countdown.hours }}</span>
                 <span class="label">Horas</span>
@@ -47,7 +47,7 @@ import { RouterModule } from '@angular/router';
               <span class="timer-separator">:</span>
             </div>
 
-            <div class="col-3 col-md-2">
+            <div class="col-2">
               <div class="countdown-item">
                 <span class="count-number cursive">{{
                   countdown.minutes
@@ -58,7 +58,7 @@ import { RouterModule } from '@angular/router';
             <div class="col-auto d-flex align-items-center">
               <span class="timer-separator">:</span>
             </div>
-            <div class="col-3 col-md-2">
+            <div class="col-2">
               <div class="countdown-item">
                 <span class="count-number cursive">{{
                   countdown.seconds
@@ -87,7 +87,7 @@ import { RouterModule } from '@angular/router';
           </div>
 
           <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
+            <div class="col">
               <a
                 routerLink="/cerimonia"
                 class="card h-100 text-decoration-none card-hover"
@@ -104,7 +104,7 @@ import { RouterModule } from '@angular/router';
               </a>
             </div>
 
-            <div class="col-md-6 col-lg-3">
+            <!-- <div class="col ">
               <a
                 routerLink="/festa"
                 class="card h-100 text-decoration-none card-hover"
@@ -119,8 +119,8 @@ import { RouterModule } from '@angular/router';
                   </p>
                 </div>
               </a>
-            </div>
-
+            </div> -->
+            <!--
             <div class="col-md-6 col-lg-3">
               <a
                 routerLink="/presentes"
@@ -134,8 +134,8 @@ import { RouterModule } from '@angular/router';
                   <p class="card-text text-muted">Nossa lista de presentes</p>
                 </div>
               </a>
-            </div>
-
+            </div> -->
+            <!--
             <div class="col-md-6 col-lg-3">
               <a
                 routerLink="/confirmar"
@@ -149,7 +149,7 @@ import { RouterModule } from '@angular/router';
                   <p class="card-text text-muted">Confirme sua presença aqui</p>
                 </div>
               </a>
-            </div>
+            </div> -->
           </div>
         </div>
       </section>
@@ -167,8 +167,8 @@ import { RouterModule } from '@angular/router';
             rgba(0, 0, 0, 0.6),
             rgba(0, 0, 0, 0.6)
           ),
-          url('/assets/hero.jpg');
-        // background-size: cover;
+          url('/assets/kaua-kimili.jpg');
+        background-size: cover;
         background-position: center;
         position: relative;
       }
@@ -313,7 +313,7 @@ export class HomeComponent implements OnInit {
   };
 
   private timer: any;
-  private weddingDate = new Date('2025-11-19T16:00:00');
+  private weddingDate = new Date('2025-11-15T19:00:00');
 
   ngOnInit() {
     this.updateCountdown();

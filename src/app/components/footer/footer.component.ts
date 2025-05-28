@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
       <div class="container">
         <div class="row g-4">
           <div class="col-md-6">
-            <h4 class="h5 mb-3">Kimilly & Kaua</h4>
+            <h4 class="h5 mb-3">Kimily & Kaua</h4>
             <p class="mb-0">19 de Novembro de 2025</p>
             <p class="mb-3">Celebrando nosso amor</p>
             <p>
@@ -40,16 +40,16 @@ import { RouterModule } from '@angular/router';
                 class="text-white-50 text-decoration-none mb-2"
                 >Cerimônia</a
               >
-              <a
+              <!-- <a
                 routerLink="/festa"
                 class="text-white-50 text-decoration-none mb-2"
                 >Festa</a
-              >
-              <a
+              > -->
+              <!-- <a
                 routerLink="/presentes"
                 class="text-white-50 text-decoration-none mb-2"
                 >Presentes</a
-              >
+              > -->
               <a
                 routerLink="/fotos"
                 class="text-white-50 text-decoration-none mb-2"
@@ -83,7 +83,7 @@ import { RouterModule } from '@angular/router';
         <hr class="my-4" />
 
         <div class="text-center text-white-50 small">
-          <p>&copy; 2025 Kimilly & Kaua. Todos os direitos reservados.</p>
+          <p>&copy; 2025 Kimily & Kaua. Todos os direitos reservados.</p>
         </div>
       </div>
     </footer>

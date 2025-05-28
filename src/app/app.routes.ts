@@ -21,20 +21,27 @@ export const routes: Routes = [
         (m) => m.CerimoniaComponent
       ),
   },
-  {
-    path: 'festa',
-    loadComponent: () =>
-      import('./pages/festa/festa.component').then((m) => m.FestaComponent),
-  },
-  {
-    path: 'presentes',
-    component: PresentesComponent,
-  },
+  // {
+  //   path: 'festa',
+  //   loadComponent: () =>
+  //     import('./pages/festa/festa.component').then((m) => m.FestaComponent),
+  // },
+  // {
+  //   path: 'presentes',
+  //   component: PresentesComponent,
+  // },
   {
     path: 'fotos',
     loadComponent: () =>
       import('./pages/fotos/fotos.component').then((m) => m.FotosComponent),
   },
+  // {
+  //   path: 'confirmacao',
+  //   loadComponent: () =>
+  //     import('./pages/confirmacao/confirmacao.component').then(
+  //       (m) => m.ConfirmacaoComponent
+  //     ),
+  // },
   // Rotas de admin simplificadas
   { path: 'login', component: LoginComponent },
   {
@@ -47,16 +54,19 @@ export const routes: Routes = [
     component: ConvidadosComponent,
     canActivate: [authGuard],
   },
-  {
-    path: 'admin/presentes',
-    component: PresentesComponent,
-    canActivate: [authGuard],
-  },
-  {
-    path: 'admin/fotos',
-    component: FotosComponent,
-    canActivate: [authGuard],
-  },
+  // {
+  //   path: 'admin/presentes',
+  //   loadComponent: () =>
+  //     import('./admin/presentes/presentes.component').then(
+  //       (m) => m.PresentesComponent
+  //     ),
+  //   canActivate: [authGuard],
+  // },
+  // {
+  //   path: 'admin/fotos',
+  //   component: FotosComponent,
+  //   canActivate: [authGuard],
+  // },
   { path: 'admin', redirectTo: '/admin/dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: '' },
 ];

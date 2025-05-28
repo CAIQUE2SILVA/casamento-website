@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite de Casamento</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:ital,wght@0,400;1,400&display=swap');
+    </style>
+</head>
+
+<body style="margin: 0; padding: 20px; background-color: #f5f5f5; font-family: 'Crimson Text', serif;">
+    <div
+        style="max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #fdfbf7 0%, #f8f4e6 100%); border: 2px solid #d4af37; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden;">
+
+        <!-- Cabeçalho decorativo -->
+        <div
+            style="background: linear-gradient(45deg, #2e86c1, #3498db); padding: 20px; text-align: center; position: relative;">
+            <div
+                style="background: rgba(255,255,255,0.1); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 30px; color: white;">💍</span>
+            </div>
+            <h1
+                style="color: white; font-family: 'Playfair Display', serif; font-size: 28px; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                Convite Especial
+            </h1>
+        </div>
+
+        <!-- Corpo da carta -->
+        <div style="padding: 40px 30px; background: #fdfbf7; position: relative;">
+
+            <!-- Ornamento decorativo -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="display: inline-block; border-top: 2px solid #d4af37; width: 100px; margin-bottom: 10px;">
+                </div>
+                <div style="font-size: 24px; color: #d4af37;">❦</div>
+                <div style="display: inline-block; border-top: 2px solid #d4af37; width: 100px; margin-top: 10px;">
+                </div>
+            </div>
+
+            <!-- Saudação -->
+            <p style="font-size: 18px; color: #2c3e50; margin-bottom: 25px; line-height: 1.6;">
+                Querido(a) <strong style="color: #2e86c1;">{{to_name}}</strong>,
+            </p>
+
+            <!-- Mensagem principal -->
+            <p style="font-size: 16px; color: #34495e; line-height: 1.8; margin-bottom: 25px; text-align: justify;">
+                É com imensa alegria e corações transbordando de amor que convidamos você para celebrar conosco o início
+                de nossa jornada como marido e esposa.
+            </p>
+
+            <!-- Nomes dos noivos -->
+            <div style="text-align: center; margin: 35px 0;">
+                <h2
+                    style="font-family: 'Playfair Display', serif; font-size: 32px; color: #2e86c1; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+                    {{couple_names}}
+                </h2>
+                <div style="font-size: 20px; color: #d4af37; margin: 10px 0;">♥</div>
+            </div>
+
+            <!-- Detalhes do evento -->
+            <div
+                style="background: rgba(46, 134, 193, 0.05); border-left: 4px solid #2e86c1; padding: 20px; margin: 30px 0; border-radius: 0 8px 8px 0;">
+                <h3 style="color: #2e86c1; font-family: 'Playfair Display', serif; margin-top: 0; font-size: 20px;">
+                    📅 Detalhes da Celebração
+                </h3>
+                <p style="margin: 10px 0; color: #2c3e50; font-size: 16px;">
+                    <strong>Data:</strong> {{wedding_date}}
+                </p>
+                <p style="margin: 10px 0; color: #2c3e50; font-size: 16px;">
+                    <strong>Local:</strong> {{wedding_location}}
+                </p>
+            </div>
+
+            <!-- Chamada para ação -->
+            <p style="font-size: 16px; color: #34495e; line-height: 1.8; margin-bottom: 25px;">
+                Sua presença é fundamental para tornar este dia ainda mais especial. Por favor, confirme sua
+                participação através do nosso site.
+            </p>
+
+            <!-- Botão de confirmação -->
+            <div style="text-align: center; margin: 35px 0;">
+                <a href="{{confirmation_link}}"
+                    style="display: inline-block; background: linear-gradient(45deg, #2e86c1, #3498db); color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(46, 134, 193, 0.3); transition: all 0.3s ease;">
+                    ✉️ Confirmar Presença
+                </a>
+            </div>
+
+            <!-- Mensagem de encerramento -->
+            <p style="font-size: 16px; color: #34495e; line-height: 1.8; margin-bottom: 30px;">
+                Mal podemos esperar para compartilhar este momento único com pessoas tão especiais como você!
+            </p>
+
+            <!-- Assinatura -->
+            <div style="margin-top: 40px; text-align: right;">
+                <p style="font-size: 16px; color: #2c3e50; margin-bottom: 5px;">
+                    Com todo nosso amor,
+                </p>
+                <p
+                    style="font-family: 'Playfair Display', serif; font-size: 24px; color: #2e86c1; margin: 0; font-style: italic;">
+                    {{sender_name}}
+                </p>
+            </div>
+
+            <!-- Ornamento final -->
+            <div style="text-align: center; margin-top: 40px;">
+                <div style="display: inline-block; border-top: 1px solid #d4af37; width: 150px;"></div>
+                <div style="font-size: 16px; color: #d4af37; margin: 10px 0;">✨</div>
+            </div>
+        </div>
+
+        <!-- Rodapé -->
+        <div style="background: #ecf0f1; padding: 20px; text-align: center; border-top: 1px solid #bdc3c7;">
+            <p style="font-size: 12px; color: #7f8c8d; margin: 0; line-height: 1.4;">
+                Este convite foi enviado automaticamente pelo site do casamento.<br>
+                © {{current_year}} - Casamento Kauã & Kimily
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
