@@ -269,10 +269,10 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    id="conviteEnviado"
-                    formControlName="conviteEnviado"
+                    id="convite_enviado"
+                    formControlName="convite_enviado"
                   />
-                  <label class="form-check-label" for="conviteEnviado">
+                  <label class="form-check-label" for="convite_enviado">
                     Convite enviado
                   </label>
                 </div>
@@ -401,7 +401,7 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                   </td>
                   <td>
                     <span class="badge bg-secondary">
-                      {{ convidado.acompanhantes.length }} total
+                      {{ (convidado.acompanhantes || []).length }} total
                     </span>
                     <span
                       class="badge bg-success ms-1"
@@ -432,15 +432,15 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                     <div class="d-flex align-items-center">
                       <span
                         class="badge me-2"
-                        [class.bg-success]="convidado.conviteEnviado"
-                        [class.bg-warning]="!convidado.conviteEnviado"
+                        [class.bg-success]="convidado.convite_enviado"
+                        [class.bg-warning]="!convidado.convite_enviado"
                       >
-                        {{ convidado.conviteEnviado ? 'Enviado' : 'Pendente' }}
+                        {{ convidado.convite_enviado ? 'Enviado' : 'Pendente' }}
                       </span>
                       <button
                         class="btn btn-sm btn-outline-primary"
                         [disabled]="
-                          convidado.conviteEnviado ||
+                          convidado.convite_enviado ||
                           enviandoConvite === convidado.id ||
                           !emailjsConfigurado
                         "
@@ -448,7 +448,7 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
                         [title]="
                           !emailjsConfigurado
                             ? 'Configure o EmailJS primeiro'
-                            : convidado.conviteEnviado
+                            : convidado.convite_enviado
                             ? 'Convite já enviado'
                             : 'Enviar convite'
                         "
@@ -646,7 +646,7 @@ export class ConvidadosComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       telefone: [''],
       confirmado: [false],
-      conviteEnviado: [false],
+      convite_enviado: [false],
       enviarConviteAoSalvar: [false],
       observacoes: [''],
       acompanhantes: this.fb.array([]),
@@ -685,7 +685,8 @@ export class ConvidadosComponent implements OnInit {
     }
 
     // Adicionar acompanhantes do convidado
-    convidado.acompanhantes.forEach((acompanhante) => {
+    const acompanhantes = convidado.acompanhantes || [];
+    acompanhantes.forEach((acompanhante) => {
       this.acompanhantesArray.push(
         this.criarAcompanhanteFormGroup(acompanhante)
       );
@@ -697,7 +698,7 @@ export class ConvidadosComponent implements OnInit {
       email: convidado.email,
       telefone: convidado.telefone,
       confirmado: convidado.confirmado,
-      conviteEnviado: convidado.conviteEnviado,
+      convite_enviado: convidado.convite_enviado,
       enviarConviteAoSalvar: false,
       observacoes: convidado.observacoes,
     });
@@ -743,7 +744,7 @@ export class ConvidadosComponent implements OnInit {
       if (
         enviarConvite &&
         this.emailjsConfigurado &&
-        !convidadoSalvo.conviteEnviado
+        !convidadoSalvo.convite_enviado
       ) {
         await this.enviarConviteEmail(convidadoSalvo);
       }
@@ -770,7 +771,7 @@ export class ConvidadosComponent implements OnInit {
   }
 
   async enviarConvite(convidado: Convidado): Promise<void> {
-    if (convidado.conviteEnviado || !this.emailjsConfigurado) {
+    if (convidado.convite_enviado || !this.emailjsConfigurado) {
       return;
     }
 
@@ -795,7 +796,7 @@ export class ConvidadosComponent implements OnInit {
     }
 
     const convidadosPendentes = this.convidados.filter(
-      (c) => !c.conviteEnviado
+      (c) => !c.convite_enviado
     );
 
     if (convidadosPendentes.length === 0) {
@@ -862,7 +863,7 @@ export class ConvidadosComponent implements OnInit {
   }
 
   contarAcompanhantesConfirmados(convidado: Convidado): number {
-    return convidado.acompanhantes.filter((a) => a.confirmado).length;
+    return (convidado.acompanhantes || []).filter((a) => a.confirmado).length;
   }
 
   async enviarWhatsApp(convidado: Convidado): Promise<void> {

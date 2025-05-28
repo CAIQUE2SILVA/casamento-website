@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EmailService } from './email.service';
+import { SupabaseService } from './supabase.service';
 import { Convidado } from '../models/convidado.model';
 
 export interface EstatisticasConvidados {
@@ -15,167 +16,193 @@ export interface EstatisticasConvidados {
   providedIn: 'root',
 })
 export class ConvidadosService {
-  // Dados mockados para desenvolvimento
-  private convidados: any[] = [
-    { id: 1, nome: 'João Silva', email: 'joao@exemplo.com', confirmado: false },
-    {
-      id: 2,
-      nome: 'Maria Oliveira',
-      email: 'maria@exemplo.com',
-      confirmado: true,
-    },
-  ];
-
-  constructor(private emailService: EmailService) {}
+  constructor(
+    private emailService: EmailService,
+    private supabase: SupabaseService
+  ) {}
 
   // Método para obter todos os convidados
-  getConvidados() {
-    return Promise.resolve(this.convidados);
+  async getConvidados(): Promise<Convidado[]> {
+    try {
+      return await this.supabase.getConvidados();
+    } catch (error) {
+      console.error('Erro ao buscar convidados:', error);
+      return [];
+    }
   }
 
   // Método para adicionar um novo convidado
-  async addConvidado(convidado: any) {
-    const novoId =
-      this.convidados.length > 0
-        ? Math.max(...this.convidados.map((c) => c.id)) + 1
-        : 1;
+  async adicionarConvidado(convidado: Convidado): Promise<Convidado> {
+    try {
+      // Extrair acompanhantes antes de salvar o convidado principal
+      const acompanhantes = convidado.acompanhantes || [];
+      const convidadoSemAcompanhantes = { ...convidado };
 
-    const novoConvidado = {
-      ...convidado,
-      id: novoId,
-      confirmado: false,
-    };
+      // Remover acompanhantes do objeto (será salvo separadamente)
+      if ('acompanhantes' in convidadoSemAcompanhantes) {
+        const { acompanhantes: _, ...resto } = convidadoSemAcompanhantes;
+        const convidadoParaSalvar = resto;
 
-    this.convidados.push(novoConvidado);
-    return Promise.resolve(novoConvidado);
+        // Salvar o convidado principal primeiro
+        const convidadoSalvo = await this.supabase.adicionarConvidado(
+          convidadoParaSalvar
+        );
+
+        // Depois salvar os acompanhantes se houver
+        if (acompanhantes.length > 0) {
+          for (const acompanhante of acompanhantes) {
+            await this.supabase.adicionarAcompanhante(
+              convidadoSalvo.id,
+              acompanhante
+            );
+          }
+          // Buscar o convidado completo com acompanhantes
+          const convidadoCompleto = await this.supabase.getConvidadoPorId(
+            convidadoSalvo.id
+          );
+          return convidadoCompleto;
+        }
+
+        return { ...convidadoSalvo, acompanhantes: [] };
+      }
+
+      // Se não tem acompanhantes, salvar diretamente
+      const convidadoSalvo = await this.supabase.adicionarConvidado(
+        convidadoSemAcompanhantes
+      );
+      return { ...convidadoSalvo, acompanhantes: [] };
+    } catch (error) {
+      console.error('Erro ao adicionar convidado:', error);
+      throw error;
+    }
   }
 
   // Método para atualizar um convidado
-  async updateConvidado(id: number, dados: any) {
-    const index = this.convidados.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.convidados[index] = { ...this.convidados[index], ...dados };
-      return Promise.resolve(this.convidados[index]);
+  async atualizarConvidado(convidado: Convidado): Promise<Convidado> {
+    try {
+      const acompanhantes = convidado.acompanhantes || [];
+      const convidadoSemAcompanhantes = { ...convidado };
+
+      // Remover acompanhantes do objeto
+      if ('acompanhantes' in convidadoSemAcompanhantes) {
+        const { acompanhantes: _, ...resto } = convidadoSemAcompanhantes;
+
+        // Atualizar convidado principal
+        const convidadoAtualizado = await this.supabase.atualizarConvidado(
+          convidado.id!,
+          resto
+        );
+
+        // Atualizar acompanhantes (remover existentes e adicionar novos)
+        await this.supabase.removerAcompanhantesConvidado(convidado.id!);
+
+        if (acompanhantes.length > 0) {
+          for (const acompanhante of acompanhantes) {
+            await this.supabase.adicionarAcompanhante(
+              convidado.id!,
+              acompanhante
+            );
+          }
+        }
+
+        // Buscar o convidado completo
+        return await this.supabase.getConvidadoPorId(convidado.id!);
+      }
+
+      // Se não tem acompanhantes, atualizar diretamente
+      const convidadoAtualizado = await this.supabase.atualizarConvidado(
+        convidado.id!,
+        convidadoSemAcompanhantes
+      );
+      return { ...convidadoAtualizado, acompanhantes: [] };
+    } catch (error) {
+      console.error('Erro ao atualizar convidado:', error);
+      throw error;
     }
-    return Promise.reject('Convidado não encontrado');
   }
 
   // Método para excluir um convidado
-  async deleteConvidado(id: number) {
-    const index = this.convidados.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.convidados.splice(index, 1);
-      return Promise.resolve(true);
-    }
-    return Promise.reject('Convidado não encontrado');
-  }
-
-  async confirmarPresencaPublica(
-    nome: string,
-    email: string,
-    telefone: string,
-    acompanhantes: number,
-    observacoes: string
-  ): Promise<void> {
-    const novoConvidado = {
-      nome,
-      email,
-      telefone,
-      acompanhantes,
-      observacoes,
-      confirmado: true,
-      dataConfirmacao: new Date().toISOString(),
-    };
-
-    // Adiciona o convidado ao array local
-    this.convidados.push(novoConvidado);
-    return Promise.resolve();
-  }
-
   async excluirConvidado(id: string): Promise<boolean> {
-    const index = this.convidados.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.convidados.splice(index, 1);
-      return Promise.resolve(true);
+    try {
+      await this.supabase.excluirConvidado(id);
+      return true;
+    } catch (error) {
+      console.error('Erro ao excluir convidado:', error);
+      throw error;
     }
-    return Promise.reject('Convidado não encontrado');
   }
 
-  getEstatisticas(): Promise<EstatisticasConvidados> {
-    const total = this.convidados.length;
-    const confirmados = this.convidados.filter((c) => c.confirmado).length;
-    const pendentes = total - confirmados;
-    const convitesEnviados = this.convidados.filter(
-      (c) => c.conviteEnviado
-    ).length;
+  async confirmarPresenca(id: string, confirmado: boolean): Promise<boolean> {
+    try {
+      const dados = {
+        confirmado,
+        data_confirmacao: confirmado ? new Date().toISOString() : null,
+      };
+      await this.supabase.atualizarConvidado(id, dados);
+      return true;
+    } catch (error) {
+      console.error('Erro ao confirmar presença:', error);
+      throw error;
+    }
+  }
 
-    // Total de pessoas (convidados principais + acompanhantes)
-    const totalPessoas = this.convidados.reduce(
-      (sum, c) => sum + 1 + c.acompanhantes.length,
-      0
-    );
+  async marcarConviteEnviado(id: string): Promise<boolean> {
+    try {
+      const dados = {
+        convite_enviado: true,
+        data_envio_convite: new Date().toISOString(),
+      };
+      await this.supabase.atualizarConvidado(id, dados);
+      return true;
+    } catch (error) {
+      console.error('Erro ao marcar convite como enviado:', error);
+      throw error;
+    }
+  }
 
-    // Total de pessoas confirmadas
-    const totalConfirmados = this.convidados.reduce((sum, c) => {
-      const acompanhantesConfirmados = c.acompanhantes.filter(
-        (a: any) => a.confirmado
+  async getEstatisticas(): Promise<EstatisticasConvidados> {
+    try {
+      const convidados = await this.getConvidados();
+
+      const total = convidados.length;
+      const confirmados = convidados.filter((c) => c.confirmado).length;
+      const pendentes = total - confirmados;
+      const convitesEnviados = convidados.filter(
+        (c) => c.convite_enviado
       ).length;
-      return sum + (c.confirmado ? 1 : 0) + acompanhantesConfirmados;
-    }, 0);
 
-    return Promise.resolve({
-      total,
-      confirmados,
-      pendentes,
-      convitesEnviados,
-      totalPessoas,
-      totalConfirmados,
-    });
-  }
+      // Total de pessoas (convidados principais + acompanhantes)
+      const totalPessoas = convidados.reduce(
+        (sum, c) => sum + 1 + (c.acompanhantes?.length || 0),
+        0
+      );
 
-  atualizarConvidado(convidado: Convidado): Promise<Convidado> {
-    const index = this.convidados.findIndex((c) => c.id === convidado.id);
-    if (index !== -1) {
-      this.convidados[index] = { ...convidado };
-      return Promise.resolve(this.convidados[index]);
+      // Total de pessoas confirmadas
+      const totalConfirmados = convidados.reduce((sum, c) => {
+        const acompanhantesConfirmados = (c.acompanhantes || []).filter(
+          (a) => a.confirmado
+        ).length;
+        return sum + (c.confirmado ? 1 : 0) + acompanhantesConfirmados;
+      }, 0);
+
+      return {
+        total,
+        confirmados,
+        pendentes,
+        convitesEnviados,
+        totalPessoas,
+        totalConfirmados,
+      };
+    } catch (error) {
+      console.error('Erro ao calcular estatísticas:', error);
+      return {
+        total: 0,
+        confirmados: 0,
+        pendentes: 0,
+        convitesEnviados: 0,
+        totalPessoas: 0,
+        totalConfirmados: 0,
+      };
     }
-    return Promise.reject('Convidado não encontrado');
-  }
-
-  adicionarConvidado(convidado: Convidado): Promise<Convidado> {
-    const novoConvidado: Convidado = {
-      ...convidado,
-      id: String(Date.now()),
-    };
-    this.convidados.push(novoConvidado);
-    return Promise.resolve(novoConvidado);
-  }
-
-  confirmarPresenca(id: string, confirmado: boolean): Promise<boolean> {
-    const index = this.convidados.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.convidados[index].confirmado = confirmado;
-      return Promise.resolve(true);
-    }
-    return Promise.reject('Convidado não encontrado');
-  }
-
-  enviarConvite(id: string): Promise<boolean> {
-    const index = this.convidados.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.convidados[index].conviteEnviado = true;
-      return Promise.resolve(true);
-    }
-    return Promise.reject('Convidado não encontrado');
-  }
-
-  marcarConviteEnviado(id: string): Promise<boolean> {
-    const index = this.convidados.findIndex((c) => c.id === id);
-    if (index !== -1) {
-      this.convidados[index].conviteEnviado = true;
-      this.convidados[index].dataEnvioConvite = new Date().toISOString();
-      return Promise.resolve(true);
-    }
-    return Promise.reject('Convidado não encontrado');
   }
 }

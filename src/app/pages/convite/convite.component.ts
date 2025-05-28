@@ -587,8 +587,8 @@ export class ConviteComponent implements OnInit {
         email: formData.email,
         telefone: formData.telefone,
         confirmado: formData.confirmado,
-        conviteEnviado: true,
-        dataConfirmacao: new Date(),
+        convite_enviado: true,
+        data_confirmacao: new Date(),
         observacoes: formData.observacoes || '',
         acompanhantes:
           formData.temAcompanhante && formData.nomeAcompanhante

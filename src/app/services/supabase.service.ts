@@ -219,4 +219,50 @@ export class SupabaseService {
       throw new Error(`Erro ao excluir convidado: ${error.message}`);
     }
   }
+
+  // Método para buscar um convidado específico por ID
+  async getConvidadoPorId(id: string) {
+    const { data, error } = await this.supabase
+      .from('convidados')
+      .select('*, acompanhantes(*)')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      throw new Error(`Erro ao buscar convidado: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  // Método para adicionar um acompanhante
+  async adicionarAcompanhante(convidadoId: string, acompanhante: any) {
+    const { data, error } = await this.supabase
+      .from('acompanhantes')
+      .insert({
+        convidado_id: convidadoId,
+        nome: acompanhante.nome,
+        confirmado: acompanhante.confirmado || false,
+      })
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Erro ao adicionar acompanhante: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  // Método para remover todos os acompanhantes de um convidado
+  async removerAcompanhantesConvidado(convidadoId: string) {
+    const { error } = await this.supabase
+      .from('acompanhantes')
+      .delete()
+      .eq('convidado_id', convidadoId);
+
+    if (error) {
+      throw new Error(`Erro ao remover acompanhantes: ${error.message}`);
+    }
+  }
 }
