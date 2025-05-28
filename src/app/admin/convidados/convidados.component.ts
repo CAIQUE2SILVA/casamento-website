@@ -36,34 +36,11 @@ import { Convidado, Acompanhante } from '../../models/convidado.model';
           <button (click)="gerarConviteGenerico()" class="btn btn-info me-2">
             <i class="fas fa-share-alt me-2"></i>Gerar Convite
           </button>
-          <button
-            (click)="enviarTodosConvites()"
-            class="btn btn-success me-2"
-            [disabled]="enviandoTodosConvites"
-          >
-            <i class="fas fa-envelope me-2" *ngIf="!enviandoTodosConvites"></i>
-            <i
-              class="fas fa-spinner fa-spin me-2"
-              *ngIf="enviandoTodosConvites"
-            ></i>
-            {{
-              enviandoTodosConvites ? 'Enviando...' : 'Enviar Todos os Convites'
-            }}
-          </button>
           <a routerLink="/admin/dashboard" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-2"></i>Voltar
           </a>
         </div>
       </div>
-
-      <!-- Alerta de configuração do EmailJS -->
-      <div *ngIf="!emailjsConfigurado" class="alert alert-warning mb-4">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        <strong>Atenção:</strong> O EmailJS não está configurado. Configure as
-        chaves no arquivo <code>src/app/services/emailjs.service.ts</code> para
-        enviar convites por email.
-      </div>
-
       <!-- Cards de estatísticas -->
       <div class="row g-4 mb-4">
         <div class="col-md-3">
