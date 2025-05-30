@@ -61,8 +61,8 @@ Olá [Nome]!
 
 Kauã & Kimily têm a honra de convidá-lo(a) para celebrar o dia mais especial de suas vidas! 💕
 
-📅 *Data:* 19 de Novembro de 2024
-🕐 *Horário:* 17:00
+📅 *Data:* 15 de Novembro de 2025
+🕐 *Horário:* 19:00
 📍 *Local:* Local da Cerimônia
 
 Para confirmar sua presença, acesse o link abaixo:

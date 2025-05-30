@@ -24,7 +24,7 @@ import { RouterModule } from '@angular/router';
               />
             </svg>
           </h1>
-          <p class="fs-4 mb-5">19 DE NOVEMBRO DE 2025</p>
+          <p class="fs-4 mb-5">15 DE NOVEMBRO DE 2025</p>
 
           <div class="row justify-content-center countdown-container">
             <div class="col-2">

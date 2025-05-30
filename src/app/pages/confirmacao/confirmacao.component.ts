@@ -74,7 +74,7 @@ import { ConvidadosService } from '../../services/convidados.service';
                   </p>
                   <div class="alert alert-info">
                     <i class="fas fa-info-circle me-2"></i>
-                    <strong>Data:</strong> 19 de Novembro de 2024<br />
+                    <strong>Data:</strong> 15 de Novembro de 2025<br />
                     <strong>Local:</strong> Local da Cerimônia
                   </div>
                   <a routerLink="/" class="btn btn-primary">

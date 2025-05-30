@@ -74,12 +74,12 @@ O template criado tem as seguintes características:
 | ------------------- | --------------------- | ---------------------------------------- |
 | `to_name`           | Nome do convidado     | "João Silva"                             |
 | `to_email`          | Email do convidado    | "joao@email.com"                         |
-| `wedding_date`      | Data do casamento     | "19 de Novembro de 2024"                 |
+| `wedding_date`      | Data do casamento     | "15 de Novembro de 2025"                 |
 | `wedding_location`  | Local da cerimônia    | "Igreja São José - Centro"               |
 | `confirmation_link` | Link para confirmação | "https://seusite.com/confirmacao?id=123" |
 | `couple_names`      | Nomes dos noivos      | "Kauã & Kimily"                          |
 | `sender_name`       | Remetente             | "Kauã & Kimily"                          |
-| `current_year`      | Ano atual             | "2024"                                   |
+| `current_year`      | Ano atual             | "2025"                                   |
 
 ## 🚀 Funcionalidades Implementadas
 
@@ -117,8 +117,8 @@ No arquivo `src/app/admin/convidados/convidados.component.ts`, linha ~580:
 const dadosConvite: ConviteEmailData = {
   to_name: convidado.nome,
   to_email: convidado.email,
-  wedding_date: "19 de Novembro de 2024", // ← Altere aqui
-  wedding_location: "Local da Cerimônia - Endereço Completo", // ← Altere aqui
+  wedding_date: "15 de Novembro de 2025", // ← Altere aqui
+  wedding_location: "Praça Comandante eduardo de Oliveira 96 Parque Edu Chaves ", // ← Altere aqui
   confirmation_link: `${window.location.origin}/confirmacao?id=${convidado.id}`,
   couple_names: "Kauã & Kimily",
 };

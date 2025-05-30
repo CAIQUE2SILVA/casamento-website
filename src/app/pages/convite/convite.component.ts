@@ -24,7 +24,7 @@ import { ConvidadosService } from '../../services/convidados.service';
             <div class="ornament">✨</div>
             <h1 class="nomes">Kauã & Kimily</h1>
             <div class="ornament">✨</div>
-            <p class="data-casamento">19 de Novembro de 2024</p>
+            <p class="data-casamento">15 de Novembro de 2025</p>
           </div>
 
           <!-- Convite -->
@@ -234,8 +234,8 @@ import { ConvidadosService } from '../../services/convidados.service';
                 momento especial com você.
               </p>
               <div class="detalhes-confirmacao">
-                <p><strong>Data:</strong> 19 de Novembro de 2024</p>
-                <p><strong>Horário:</strong> 17:00</p>
+                <p><strong>Data:</strong> 15 de Novembro de 2025</p>
+                <p><strong>Horário:</strong> 19:00</p>
               </div>
             </div>
           </div>
