@@ -98,7 +98,7 @@ import { RouterModule } from '@angular/router';
                   </div>
                   <h3 class="card-title h5">Cerimônia</h3>
                   <p class="card-text text-muted">
-                    Detalhes sobre a cerimônia religiosa
+                    Detalhes sobre a cerimônia
                   </p>
                 </div>
               </a>

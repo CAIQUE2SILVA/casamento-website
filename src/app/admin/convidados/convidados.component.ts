@@ -803,7 +803,7 @@ export class ConvidadosComponent implements OnInit {
   }
 
   async enviarWhatsApp(convidado: Convidado): Promise<void> {
-    const token = this.conviteService.gerarTokenConvite();
+        // const token = this.conviteService.gerarTokenConvite();
     // Salvar o token no convidado se necessário
     // convidado.token = token;
     // await this.convidadosService.atualizarConvidado(convidado.id!, convidado);
@@ -811,15 +811,13 @@ export class ConvidadosComponent implements OnInit {
     this.conviteService.abrirWhatsApp(
       convidado.telefone,
       convidado.nome,
-      token
     );
   }
 
   async copiarTextoInstagram(convidado: Convidado): Promise<void> {
-    const token = this.conviteService.gerarTokenConvite();
+    // const token = this.conviteService.gerarTokenConvite();
     const texto = this.conviteService.gerarTextoInstagram(
       convidado.nome,
-      token
     );
 
     const sucesso = await this.conviteService.copiarTexto(texto);
@@ -832,8 +830,8 @@ export class ConvidadosComponent implements OnInit {
   }
 
   async copiarLinkConvite(convidado: Convidado): Promise<void> {
-    const token = this.conviteService.gerarTokenConvite();
-    const url = this.conviteService.gerarUrlConvite(token);
+    // const token = this.conviteService.gerarTokenConvite();
+    const url = this.conviteService.gerarUrlConvite();
 
     const sucesso = await this.conviteService.copiarTexto(url);
     if (sucesso) {
@@ -845,9 +843,9 @@ export class ConvidadosComponent implements OnInit {
   }
 
   gerarConviteGenerico(): void {
-    const token = this.conviteService.gerarTokenConvite();
-    const url = this.conviteService.gerarUrlConvite(token);
-    const textoWhatsApp = this.conviteService.gerarTextoInstagram('', token);
+    // const token = this.conviteService.gerarTokenConvite();
+    const url = this.conviteService.gerarUrlConvite();
+    const textoWhatsApp = this.conviteService.gerarTextoInstagram('');
 
     const modal = `
       <div style="max-width: 500px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: white;">
@@ -864,7 +862,7 @@ export class ConvidadosComponent implements OnInit {
           <button onclick="window.open('${this.conviteService.gerarLinkWhatsApp(
             '',
             '',
-            token
+
           )}', '_blank')" style="padding: 8px 16px; margin: 5px; background: #25d366; color: white; border: none; border-radius: 4px; cursor: pointer;">
             📱 Enviar via WhatsApp
           </button>

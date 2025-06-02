@@ -9,27 +9,27 @@ export class ConviteService {
   constructor() {}
 
   /**
-   * Gera um token único para o convite
+   * Gera um  único para o convite
    */
-  gerarTokenConvite(): string {
+  gerarConvite(): string {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
   }
 
   /**
    * Gera URL do convite
    */
-  gerarUrlConvite(token?: string): string {
-    if (token) {
-      return `${this.baseUrl}/convite/${token}`;
-    }
+  gerarUrlConvite(): string {
+    // if () {
+    //   return `${this.baseUrl}/convite/`;
+    // }
     return `${this.baseUrl}/convite`;
   }
 
   /**
    * Gera mensagem para WhatsApp
    */
-  gerarMensagemWhatsApp(nomeConvidado?: string, token?: string): string {
-    const url = this.gerarUrlConvite(token);
+  gerarMensagemWhatsApp(nomeConvidado?: string, ): string {
+    const url = this.gerarUrlConvite();
     const nomeFormatado = nomeConvidado ? ` ${nomeConvidado}` : '';
 
     const mensagem = `💍 *Convite de Casamento* 💍
@@ -56,9 +56,9 @@ Kauã & Kimily ❤️`;
   gerarLinkWhatsApp(
     telefone?: string,
     nomeConvidado?: string,
-    token?: string
+
   ): string {
-    const mensagem = this.gerarMensagemWhatsApp(nomeConvidado, token);
+    const mensagem = this.gerarMensagemWhatsApp(nomeConvidado);
 
     if (telefone) {
       // Remove caracteres especiais do telefone
@@ -73,8 +73,8 @@ Kauã & Kimily ❤️`;
   /**
    * Gera texto para Instagram (DM manual)
    */
-  gerarTextoInstagram(nomeConvidado?: string, token?: string): string {
-    const url = this.gerarUrlConvite(token);
+  gerarTextoInstagram(nomeConvidado?: string, ): string {
+    const url = this.gerarUrlConvite();
     const nomeFormatado = nomeConvidado ? ` ${nomeConvidado}` : '';
 
     return `💍 Convite de Casamento 💍
@@ -112,9 +112,8 @@ Kauã & Kimily ❤️`;
   abrirWhatsApp(
     telefone?: string,
     nomeConvidado?: string,
-    token?: string
   ): void {
-    const link = this.gerarLinkWhatsApp(telefone, nomeConvidado, token);
+    const link = this.gerarLinkWhatsApp(telefone, nomeConvidado,);
     window.open(link, '_blank');
   }
 
@@ -131,15 +130,14 @@ Kauã & Kimily ❤️`;
    */
   async compartilharNativo(
     nomeConvidado?: string,
-    token?: string
   ): Promise<boolean> {
     if (!navigator.share) {
       return false;
     }
 
     try {
-      const url = this.gerarUrlConvite(token);
-      const texto = this.gerarTextoInstagram(nomeConvidado, token);
+      const url = this.gerarUrlConvite();
+      const texto = this.gerarTextoInstagram(nomeConvidado);
 
       await navigator.share({
         title: 'Convite de Casamento - Kauã & Kimily',
