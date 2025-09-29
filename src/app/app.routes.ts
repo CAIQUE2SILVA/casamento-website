@@ -9,11 +9,11 @@ import { FotosComponent } from './admin/fotos/fotos.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  {
-    path: 'sobre',
-    loadComponent: () =>
-      import('./pages/sobre/sobre.component').then((m) => m.SobreComponent),
-  },
+  // {
+  //   path: 'sobre',
+  //   loadComponent: () =>
+  //     import('./pages/sobre/sobre.component').then((m) => m.SobreComponent),
+  // },
   {
     path: 'cerimonia',
     loadComponent: () =>

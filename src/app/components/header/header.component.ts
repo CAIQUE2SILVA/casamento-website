@@ -41,11 +41,11 @@ import { filter } from 'rxjs/operators';
                 Início
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" routerLink="/sobre" routerLinkActive="active">
                 Sobre Nós
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a
                 class="nav-link"
