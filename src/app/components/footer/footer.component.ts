@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
         <div class="row g-4">
           <div class="col-md-6">
             <h4 class="h5 mb-3">Kimily & Kaua</h4>
-            <p class="mb-0">19 de Novembro de 2025</p>
+            <p class="mb-0">15 de Novembro de 2025</p>
             <p class="mb-3">Celebrando nosso amor</p>
             <p>
               <a
@@ -30,11 +30,11 @@ import { RouterModule } from '@angular/router';
               <a routerLink="/" class="text-white-50 text-decoration-none mb-2"
                 >Início</a
               >
-              <a
+              <!-- <a
                 routerLink="/sobre"
                 class="text-white-50 text-decoration-none mb-2"
                 >Sobre Nós</a
-              >
+              > -->
               <a
                 routerLink="/cerimonia"
                 class="text-white-50 text-decoration-none mb-2"
