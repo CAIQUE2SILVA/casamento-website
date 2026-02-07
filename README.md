@@ -47,9 +47,6 @@ ng serve
 
 5. Acesse o projeto em `http://localhost:4200`
 
-## Deploy
-
-Veja o arquivo [DEPLOY.md](DEPLOY.md) para instruções detalhadas sobre como implantar o site usando Supabase e Netlify.
 
 ## Personalização
 
