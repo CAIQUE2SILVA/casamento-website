@@ -1,0 +1,25 @@
+    <div class="admin-layout">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Painel Admin</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+          <a routerLink="/admin/presentes" routerLinkActive="active">Presentes</a>
+          <a routerLink="/admin/fotos" routerLinkActive="active">Fotos</a>
+          <a routerLink="/admin/convidados" routerLinkActive="active">Convidados</a>
+          <a href="javascript:void(0)" (click)="logout()" class="logout">Sair</a>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="content-header">
+          <h1>Área Administrativa</h1>
+          <button (click)="logout()" class="logout-btn">Sair</button>
+        </header>
+
+        <div class="content-body">
+          <router-outlet></router-outlet>
+        </div>
+      </main>
+    </div>

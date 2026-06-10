@@ -1,0 +1,79 @@
+    <div class="container">
+      <h1>Lista de Desejos</h1>
+
+      <div class="loading" *ngIf="loading">Carregando lista de desejos...</div>
+
+      <div class="empty-message" *ngIf="!loading && presentes.length === 0">
+        Ainda não temos itens na lista de desejos.
+      </div>
+
+      <div class="wishlist-grid" *ngIf="!loading && presentes.length > 0">
+        <div class="wishlist-item" *ngFor="let presente of presentes">
+          <div class="wishlist-image">
+            <img [src]="presente.imagem" [alt]="presente.nome" />
+            <div class="status-badge" [class.reserved]="!presente.disponivel">
+              {{ presente.disponivel ? 'Disponível' : 'Reservado' }}
+            </div>
+          </div>
+
+          <div class="wishlist-info">
+            <h3>{{ presente.nome }}</h3>
+            <p class="price">R$ {{ presente.preco | number : '1.2-2' }}</p>
+
+            <div class="actions" *ngIf="presente.disponivel">
+              <button class="reserve-btn" (click)="openReserveModal(presente)">
+                Reservar
+              </button>
+              <a
+                [href]="presente.link"
+                target="_blank"
+                class="buy-btn"
+                *ngIf="presente.link"
+                >Comprar</a
+              >
+            </div>
+
+            <p class="reserved-by" *ngIf="!presente.disponivel">
+              Reservado por {{ presente.reservadoPor }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" *ngIf="selectedPresente" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <span class="close" (click)="closeModal()">&times;</span>
+          <h2>Reservar Presente</h2>
+
+          <div class="modal-item-info">
+            <img
+              [src]="selectedPresente.imagem"
+              [alt]="selectedPresente.nome"
+            />
+            <div>
+              <h3>{{ selectedPresente.nome }}</h3>
+              <p class="price">
+                R$ {{ selectedPresente.preco | number : '1.2-2' }}
+              </p>
+            </div>
+          </div>
+
+          <form (ngSubmit)="reservePresente()">
+            <div class="form-group">
+              <label for="nome">Seu Nome</label>
+              <input
+                type="text"
+                id="nome"
+                [(ngModel)]="reservationName"
+                name="nome"
+                required
+              />
+            </div>
+
+            <button type="submit" [disabled]="!reservationName">
+              Confirmar Reserva
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,113 @@
+    <div class="container">
+      <h1>Confirmar Presença</h1>
+
+      <div class="content">
+        <p class="intro-text">
+          Estamos ansiosos para celebrar nosso casamento com você! Por favor,
+          confirme sua presença preenchendo o formulário abaixo.
+        </p>
+
+        <div class="confirmation-card" *ngIf="!submitted">
+          <form [formGroup]="confirmForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="nome">Nome Completo</label>
+              <input
+                type="text"
+                id="nome"
+                formControlName="nome"
+                placeholder="Digite seu nome completo"
+              />
+              <div
+                class="error-message"
+                *ngIf="nome?.invalid && (nome?.dirty || nome?.touched)"
+              >
+                <span *ngIf="nome?.errors?.['required']"
+                  >Nome é obrigatório</span
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                placeholder="Digite seu email"
+              />
+              <div
+                class="error-message"
+                *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+              >
+                <span *ngIf="email?.errors?.['required']"
+                  >Email é obrigatório</span
+                >
+                <span *ngIf="email?.errors?.['email']">Email inválido</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="telefone">Telefone</label>
+              <input
+                type="tel"
+                id="telefone"
+                formControlName="telefone"
+                placeholder="(00) 00000-0000"
+              />
+              <div
+                class="error-message"
+                *ngIf="
+                  telefone?.invalid && (telefone?.dirty || telefone?.touched)
+                "
+              >
+                <span *ngIf="telefone?.errors?.['required']"
+                  >Telefone é obrigatório</span
+                >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="acompanhantes">Número de Acompanhantes</label>
+              <select id="acompanhantes" formControlName="acompanhantes">
+                <option value="0">Nenhum acompanhante</option>
+                <option value="1">1 acompanhante</option>
+                <option value="2">2 acompanhantes</option>
+                <option value="3">3 acompanhantes</option>
+                <option value="4">4 acompanhantes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="observacoes">Observações (opcional)</label>
+              <textarea
+                id="observacoes"
+                formControlName="observacoes"
+                rows="3"
+                placeholder="Restrições alimentares, alergias, etc."
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              [disabled]="confirmForm.invalid || isSubmitting"
+            >
+              <span *ngIf="!isSubmitting">Confirmar Presença</span>
+              <span *ngIf="isSubmitting">Enviando...</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="success-message" *ngIf="submitted">
+          <div class="success-icon">✓</div>
+          <h2>Presença Confirmada!</h2>
+          <p>
+            Obrigado por confirmar sua presença em nosso casamento. Estamos
+            ansiosos para celebrar este momento especial com você!
+          </p>
+          <p>
+            Um email de confirmação foi enviado para
+            {{ confirmForm.get('email')?.value }}.
+          </p>
+        </div>
+      </div>
+    </div>

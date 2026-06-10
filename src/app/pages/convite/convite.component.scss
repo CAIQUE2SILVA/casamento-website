@@ -1,0 +1,258 @@
+      .convite-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .carta-envelope {
+        max-width: 600px;
+        width: 100%;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .carta-envelope::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #3498db, #2e86c1, #3498db);
+      }
+
+      .carta-content {
+        padding: 40px;
+        font-family: 'Georgia', serif;
+        line-height: 1.6;
+      }
+
+      .carta-header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 20px;
+      }
+
+      .ornament {
+        font-size: 24px;
+        margin: 10px 0;
+      }
+
+      .nomes {
+        font-size: 2.5rem;
+        color: #3498db;
+        margin: 15px 0;
+        font-family: 'Playfair Display', serif;
+      }
+
+      .data-casamento {
+        font-size: 1.2rem;
+        color: #666;
+        font-style: italic;
+      }
+
+      .convite-text {
+        margin-bottom: 30px;
+      }
+
+      .saudacao {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+      }
+
+      .nome-convidado {
+        color: #3498db;
+        font-weight: bold;
+      }
+
+      .mensagem {
+        margin-bottom: 15px;
+        color: #444;
+      }
+
+      .detalhes-evento {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .detalhe {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #3498db;
+      }
+
+      .detalhe i {
+        width: 20px;
+        margin-right: 10px;
+      }
+
+      .confirmacao-section {
+        border-top: 2px solid #f0f0f0;
+        padding-top: 30px;
+      }
+
+      .confirmacao-titulo {
+        text-align: center;
+        color: #3498db;
+        margin-bottom: 25px;
+        font-family: 'Playfair Display', serif;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #3498db;
+      }
+
+      .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .radio-item {
+        display: flex;
+        align-items: center;
+      }
+
+      .radio-item input[type='radio'] {
+        margin-right: 10px;
+      }
+
+      .radio-item label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 0;
+      }
+
+      .radio-item label i {
+        margin-right: 8px;
+        color: #3498db;
+      }
+
+      .btn-confirmar {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(45deg, #3498db, #2e86c1);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .btn-confirmar:hover:not(:disabled) {
+        transform: translateY(-2px);
+      }
+
+      .btn-confirmar:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .error-message {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+
+      .sucesso-section {
+        text-align: center;
+        border-top: 2px solid #f0f0f0;
+        padding-top: 30px;
+      }
+
+      .sucesso-content i {
+        font-size: 3rem;
+        color: #27ae60;
+        margin-bottom: 20px;
+      }
+
+      .sucesso-content h3 {
+        color: #27ae60;
+        margin-bottom: 15px;
+      }
+
+      .detalhes-confirmacao {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+
+      .carta-footer {
+        text-align: center;
+        margin-top: 30px;
+        border-top: 2px solid #f0f0f0;
+        padding-top: 20px;
+      }
+
+      .despedida {
+        font-style: italic;
+        color: #666;
+      }
+
+      .assinatura {
+        font-size: 1.3rem;
+        color: #3498db;
+        font-weight: bold;
+        margin: 10px 0;
+      }
+
+      .ornament-footer {
+        font-size: 24px;
+      }
+
+      @media (max-width: 768px) {
+        .convite-container {
+          padding: 10px;
+        }
+
+        .carta-content {
+          padding: 20px;
+        }
+
+        .nomes {
+          font-size: 2rem;
+        }
+
+        .radio-group {
+          gap: 15px;
+        }
+      }

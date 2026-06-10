@@ -5,31 +5,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-presentes',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="container">
-      <h1>Lista de Presentes</h1>
-      <div class="content">
-        <p>Nossa lista de presentes...</p>
-      </div>
-    </div>
-  `,
-  styles: [
-    `
-      .container {
-        max-width: 800px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-      }
-
-      h1 {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-
-      .content {
-        line-height: 1.6;
-      }
-    `,
-  ],
+  templateUrl: './presentes.component.html',
+  styleUrls: ['./presentes.component.scss'],
 })
 export class PresentesComponent {}

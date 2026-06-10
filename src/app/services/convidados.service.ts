@@ -141,4 +141,24 @@ export class ConvidadosService {
       };
     }
   }
+
+  async confirmarPresencaPublica(
+    nome: string,
+    email: string,
+    telefone: string,
+    acompanhantes: number,
+    observacoes: string
+  ): Promise<Convidado> {
+    const convidado: Convidado = {
+      nome,
+      email,
+      telefone,
+      confirmado: true,
+      convite_enviado: false,
+      data_confirmacao: new Date().toISOString(),
+      observacoes: observacoes || null,
+      acompanhante: acompanhantes > 0,
+    };
+    return this.adicionarConvidado(convidado);
+  }
 }

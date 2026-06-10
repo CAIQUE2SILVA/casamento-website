@@ -1,0 +1,24 @@
+      .bg-dark {
+        background-color: #1a5276 !important;
+      }
+
+      h4 {
+        color: #2e86c1;
+        font-family: 'Playfair Display', cursive;
+        font-weight: 600;
+      }
+
+      .text-white-50:hover {
+        color: #2e86c1 !important;
+        transition: color 0.3s ease;
+      }
+
+      @media (max-width: 768px) {
+        .row {
+          text-align: center;
+        }
+
+        .col-md-6:first-child {
+          margin-bottom: 2rem;
+        }
+      }

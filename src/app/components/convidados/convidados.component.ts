@@ -15,7 +15,7 @@ import { EmailService } from '../../services/email.service';
     EmailService
   ],
   templateUrl: './convidados.component.html',
-  styleUrls: ['./convidados.component.scss']
+  styleUrls: ['./convidados.component.scss'],
 })
 export class ConvidadosComponent {
   constructor(

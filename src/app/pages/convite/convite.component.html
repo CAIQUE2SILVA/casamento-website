@@ -1,0 +1,234 @@
+    <div class="convite-container">
+      <!-- Imagem da Carta -->
+      <div class="carta-envelope">
+        <div class="carta-content">
+          <!-- Cabeçalho da Carta -->
+          <div class="carta-header">
+            <div class="ornament">✨</div>
+            <h1 class="nomes">Kauã & Kimily</h1>
+            <div class="ornament">✨</div>
+            <p class="data-casamento">15 de Novembro de 2025</p>
+          </div>
+
+          <!-- Convite -->
+          <div class="convite-text">
+            <p class="saudacao">
+              Querido(a)
+              <span class="nome-convidado">{{
+                nomeConvidado || 'Convidado'
+              }}</span
+              >,
+            </p>
+
+            <p class="mensagem">
+              Com imenso carinho e alegria, convidamos você para ser parte do
+              dia mais especial de nossas vidas.
+            </p>
+
+            <p class="mensagem">
+              Será uma honra tê-lo(a) conosco para celebrar nosso amor e o
+              início de uma nova jornada juntos.
+            </p>
+
+            <div class="detalhes-evento">
+              <div class="detalhe">
+                <i class="fas fa-calendar-alt"></i>
+                <span>15 de Novembro de 2025</span>
+              </div>
+              <div class="detalhe">
+                <i class="fas fa-clock"></i>
+                <span>19:00</span>
+              </div>
+              <div class="detalhe">
+                <i class="fas fa-map-marker-alt"></i>
+                <span
+                  >Praça Comandante Eduardo de Oliveira 96 Parque Edu Chaves
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulário de Confirmação -->
+          <div class="confirmacao-section" *ngIf="!confirmacaoSucesso">
+            <h3 class="confirmacao-titulo">Confirme sua Presença</h3>
+
+            <form [formGroup]="conviteForm" (ngSubmit)="confirmarPresenca()">
+              <div class="form-group">
+                <label>Nome Completo *</label>
+                <input
+                  type="text"
+                  formControlName="nome"
+                  class="form-control"
+                  placeholder="Seu nome completo"
+                />
+                <div
+                  class="error-message"
+                  *ngIf="conviteForm.get('nome')?.errors?.['required'] && conviteForm.get('nome')?.touched"
+                >
+                  Nome é obrigatório
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Email *</label>
+                <input
+                  type="email"
+                  formControlName="email"
+                  class="form-control"
+                  placeholder="seu@email.com"
+                />
+                <div
+                  class="error-message"
+                  *ngIf="conviteForm.get('email')?.errors?.['required'] && conviteForm.get('email')?.touched"
+                >
+                  Email é obrigatório
+                </div>
+                <div
+                  class="error-message"
+                  *ngIf="conviteForm.get('email')?.errors?.['email'] && conviteForm.get('email')?.touched"
+                >
+                  Email inválido
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Telefone *</label>
+                <input
+                  type="tel"
+                  formControlName="telefone"
+                  class="form-control"
+                  placeholder="(11) 99999-9999"
+                />
+                <div
+                  class="error-message"
+                  *ngIf="conviteForm.get('telefone')?.errors?.['required'] && conviteForm.get('telefone')?.touched"
+                >
+                  Telefone é obrigatório
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Você confirma sua presença? *</label>
+                <div class="radio-group">
+                  <div class="radio-item">
+                    <input
+                      type="radio"
+                      formControlName="confirmado"
+                      [value]="true"
+                      id="sim"
+                    />
+                    <label for="sim">
+                      <i class="fas fa-heart"></i>
+                      Sim, estarei presente!
+                    </label>
+                  </div>
+                  <div class="radio-item">
+                    <input
+                      type="radio"
+                      formControlName="confirmado"
+                      [value]="false"
+                      id="nao"
+                    />
+                    <label for="nao">
+                      <i class="fas fa-heart-broken"></i>
+                      Infelizmente não poderei comparecer
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="form-group"
+                *ngIf="conviteForm.get('confirmado')?.value === true"
+              >
+                <label>Vai levar acompanhante?</label>
+                <div class="radio-group">
+                  <div class="radio-item">
+                    <input
+                      type="radio"
+                      formControlName="temAcompanhante"
+                      [value]="false"
+                      id="sozinho"
+                    />
+                    <label for="sozinho">Apenas eu</label>
+                  </div>
+                  <div class="radio-item">
+                    <input
+                      type="radio"
+                      formControlName="temAcompanhante"
+                      [value]="true"
+                      id="acompanhante"
+                    />
+                    <label for="acompanhante"
+                      >Sim, vou levar acompanhante</label
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="form-group"
+                *ngIf="conviteForm.get('temAcompanhante')?.value === true"
+              >
+                <label>Nome do Acompanhante *</label>
+                <input
+                  type="text"
+                  formControlName="nomeAcompanhante"
+                  class="form-control"
+                  placeholder="Nome completo do acompanhante"
+                />
+                <div
+                  class="error-message"
+                  *ngIf="conviteForm.get('nomeAcompanhante')?.errors?.['required'] && conviteForm.get('nomeAcompanhante')?.touched"
+                >
+                  Nome do acompanhante é obrigatório
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Observações</label>
+                <textarea
+                  formControlName="observacoes"
+                  class="form-control"
+                  placeholder="Restrições alimentares, observações especiais..."
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                class="btn-confirmar"
+                [disabled]="conviteForm.invalid || enviando"
+              >
+                <i class="fas fa-heart" *ngIf="!enviando"></i>
+                <i class="fas fa-spinner fa-spin" *ngIf="enviando"></i>
+                {{ enviando ? 'Confirmando...' : 'Confirmar Presença' }}
+              </button>
+            </form>
+          </div>
+
+          <!-- Sucesso -->
+          <div class="sucesso-section" *ngIf="confirmacaoSucesso">
+            <div class="sucesso-content">
+              <i class="fas fa-check-circle"></i>
+              <h3>Presença Confirmada!</h3>
+              <p>
+                Obrigado por confirmar! Estamos ansiosos para celebrar este
+                momento especial com você.
+              </p>
+              <div class="detalhes-confirmacao">
+                <p><strong>Data:</strong> 15 de Novembro de 2025</p>
+                <p><strong>Horário:</strong> 19:00</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rodapé da Carta -->
+          <div class="carta-footer">
+            <p class="despedida">Com amor e carinho,</p>
+            <p class="assinatura">Kauã & Kimily</p>
+            <div class="ornament-footer">💕</div>
+          </div>
+        </div>
+      </div>
+    </div>

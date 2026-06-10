@@ -9,7 +9,7 @@ import { firstValueFrom } from 'rxjs';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './presentes.component.html',
-  styleUrls: ['./presentes.component.scss']
+  styleUrls: ['./presentes.component.scss'],
 })
 export class PresentesComponent implements OnInit {
   presentes: Presente[] = [];
