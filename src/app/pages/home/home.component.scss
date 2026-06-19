@@ -23,6 +23,16 @@
         margin: 0 auto;
       }
 
+      .married-message {
+        text-align: center;
+        margin: 0 auto;
+        padding: 1rem 0;
+      }
+
+      .married-message .count-number {
+        display: inline-block;
+      }
+
       .countdown-item {
         padding: 1rem;
         border-radius: 8px;

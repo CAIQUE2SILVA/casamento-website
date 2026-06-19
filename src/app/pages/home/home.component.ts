@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  casados = false;
+
   countdown = {
     days: 0,
     hours: 0,
@@ -22,7 +24,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.updateCountdown();
-    this.timer = setInterval(() => this.updateCountdown(), 1000);
+    if (!this.casados) {
+      this.timer = setInterval(() => this.updateCountdown(), 1000);
+    }
   }
 
   ngOnDestroy() {
@@ -32,11 +36,10 @@ export class HomeComponent implements OnInit {
   }
 
   private updateCountdown() {
-    const now = new Date();
-    const diff = this.weddingDate.getTime() - now.getTime();
+    const diff = this.weddingDate.getTime() - Date.now();
 
     if (diff <= 0) {
-      this.countdown = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      this.casados = true;
       clearInterval(this.timer);
       return;
     }
