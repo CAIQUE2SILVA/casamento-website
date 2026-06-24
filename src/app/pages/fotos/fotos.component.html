@@ -1,0 +1,26 @@
+    <div class="container">
+      <h1>Galeria de Fotos</h1>
+
+      <div class="loading" *ngIf="loading">Carregando fotos...</div>
+
+      <div class="empty-message" *ngIf="!loading && fotos.length === 0">
+        Ainda não temos fotos para mostrar.
+      </div>
+
+      <div class="gallery" *ngIf="!loading && fotos.length > 0">
+        <div class="gallery-item" *ngFor="let foto of fotos">
+          <img [src]="foto.url" [alt]="foto.titulo" (click)="openModal(foto)" />
+        </div>
+      </div>
+
+      <div class="modal" *ngIf="selectedFoto" (click)="closeModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <span class="close" (click)="closeModal()">&times;</span>
+          <img [src]="selectedFoto.url" [alt]="selectedFoto.titulo" />
+          <div class="modal-info">
+            <h3>{{ selectedFoto.titulo }}</h3>
+            <p *ngIf="selectedFoto.descricao">{{ selectedFoto.descricao }}</p>
+          </div>
+        </div>
+      </div>
+    </div>

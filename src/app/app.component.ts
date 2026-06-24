@@ -10,35 +10,8 @@ import { filter } from 'rxjs/operators';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, HeaderComponent, FooterComponent],
-  template: `
-    <!-- Mostrar header somente em páginas que não são do admin -->
-    <app-header *ngIf="!isAdminRoute"></app-header>
-
-    <main [ngClass]="{ 'admin-page': isAdminRoute }">
-      <router-outlet></router-outlet>
-    </main>
-
-    <!-- Mostrar footer somente em páginas que não são do admin -->
-    <app-footer *ngIf="!isAdminRoute"></app-footer>
-  `,
-  styles: [
-    `
-      :host {
-        display: block;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      main {
-        flex: 1;
-      }
-
-      .admin-page {
-        padding-top: 0;
-      }
-    `,
-  ],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   isAdminRoute: boolean = false;

@@ -1,0 +1,106 @@
+      .container {
+        max-width: 900px;
+        margin: 2rem auto 3rem;
+        padding: 0 1rem;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-family: 'Times New Roman', serif;
+        font-size: 2.5rem;
+        letter-spacing: 2px;
+      }
+
+      h2 {
+        font-family: 'Times New Roman', serif;
+        color: #1a5276;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .content {
+        line-height: 1.8;
+      }
+
+      .couple-photo {
+        text-align: center;
+        margin-bottom: 2rem;
+
+        img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .story {
+        margin-bottom: 3rem;
+
+        p {
+          margin-bottom: 1.5rem;
+          color: #333;
+        }
+      }
+
+      .timeline {
+        position: relative;
+        padding-left: 2rem;
+        margin-top: 4rem;
+
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 2px;
+          background-color: #1a5276;
+        }
+      }
+
+      .timeline-item {
+        position: relative;
+        margin-bottom: 2.5rem;
+
+        &:before {
+          content: '';
+          position: absolute;
+          left: -2.5rem;
+          top: 0.5rem;
+          width: 1rem;
+          height: 1rem;
+          border-radius: 50%;
+          background-color: #1a5276;
+        }
+      }
+
+      .timeline-date {
+        font-weight: bold;
+        color: #1a5276;
+        margin-bottom: 0.5rem;
+      }
+
+      .timeline-content {
+        h3 {
+          margin-top: 0;
+          margin-bottom: 0.5rem;
+          color: #333;
+        }
+
+        p {
+          margin: 0;
+          color: #666;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .timeline {
+          padding-left: 1.5rem;
+        }
+
+        .timeline-item:before {
+          left: -2rem;
+        }
+      }

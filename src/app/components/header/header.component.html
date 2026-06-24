@@ -1,0 +1,70 @@
+    <nav
+      class="navbar navbar-expand-lg navbar-dark fixed-top"
+      [ngClass]="{
+        'bg-dark-solid': isNotHomePage || scrolled,
+        'bg-dark-transparent': !isNotHomePage && !scrolled
+      }"
+    >
+      <div class="container">
+        <a class="navbar-brand" routerLink="/">
+          <span class="brand-text">K & K</span>
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          (click)="isMenuOpen = !isMenuOpen"
+          [attr.aria-expanded]="isMenuOpen"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" [ngClass]="{ show: isMenuOpen }">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+              >
+                Início
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" routerLink="/sobre" routerLinkActive="active">
+                Sobre Nós
+              </a>
+            </li> -->
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/cerimonia"
+                routerLinkActive="active"
+              >
+                Cerimônia
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" routerLink="/festa" routerLinkActive="active">
+                Festa
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/presentes"
+                routerLinkActive="active"
+              >
+                Presentes
+              </a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/fotos" routerLinkActive="active">
+                Fotos
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>

@@ -1,1 +1,9 @@
-<router-outlet></router-outlet>
+    <!-- Mostrar header somente em páginas que não são do admin -->
+    <app-header *ngIf="!isAdminRoute"></app-header>
+
+    <main [ngClass]="{ 'admin-page': isAdminRoute }">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- Mostrar footer somente em páginas que não são do admin -->
+    <app-footer *ngIf="!isAdminRoute"></app-footer>
